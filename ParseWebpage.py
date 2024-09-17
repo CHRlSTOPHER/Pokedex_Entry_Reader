@@ -7,7 +7,9 @@ POKEMON = "pokemon"
 SPECIES = "pokemon-species"
 HEADERS = {'User-Agent': 'Mozilla/5.0'}
 
-def get_pkmn_api_data(entry_value):
+
+def get_pkmn_api_data(entry):
+    entry_value = entry.widget.get()
     pkmn_address = ADDRESS.format(POKEMON, entry_value)
     species_address = ADDRESS.format(SPECIES, entry_value)
 
