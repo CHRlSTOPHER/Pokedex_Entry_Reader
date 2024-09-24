@@ -35,7 +35,7 @@ class PokedexGui:
         # pokemon name label and entry box
         tk.Label(self.frame, text="Choose a Pokemon").grid(column=0, row=0)
         tk.Entry(self.frame).grid(column=1, row=0, padx=5)
-        root.bind("<Return>", self.create_pokdex_entry)
+        root.bind("<Return>", self.create_pokedex_entry)
 
         # text for pokedex flavor text
         self.dex_text_label = tk.Label(self.frame, font=("Arial", 11))
@@ -76,7 +76,7 @@ class PokedexGui:
         return entry_texts[:-2]
 
     def find_nth(self, string, n):
-        parts = string.split(" ", n+1)
+        parts = string.split(" ", n + 1)
         if len(parts) <= n + 1:
             return -1
         return len(string) - len(parts[-1]) - len(" ")
@@ -96,44 +96,83 @@ class PokedexManager(PokedexGui):
         self.entry_value = None
         self.pkmn_data = None
         self.species_data = None
-        self.artwork_list = None
-        self.pokedex_entries = None
 
-    def create_pokdex_entry(self, entry):
-        self.pkmn_data, self.species_data = get_pkmn_api_data(entry)
+        self.name = None
+        self.national_dex_num = None
+        self.artwork_list = None
+        self.type = []
+        self.height = None
+        self.weight = None
+        self.abilities = []
+        self.stats = []
+        self.cries = {}
+        self.flavour_text = []
+
+    def create_pokedex_entry(self, entry):
+        entry_value = entry.widget.get()
+        self.pkmn_data, self.species_data = get_pkmn_api_data(entry_value)
 
         # check if data was succesfully returned.
         if not self.pkmn_data and not self.species_data:
             print(f'{HTTP_ERROR_MESSAGE}"{self.entry_value}".')
             return
 
-        self.get_artwork()
-        self.get_dex_flavor_text()
+        self.name = entry_value.capitalize()
+        self.national_dex_num = self.pkmn_data["id"]
+        self.artwork_list = self.get_artwork()
+        self.type = self.pkmn_data["types"]
+        self.height = self.pkmn_data["height"]/10.0
+        self.weight = self.pkmn_data["weight"]/10.0
+        self.abilities = self.pkmn_data["abilities"]
+        self.stats = self.pkmn_data["stats"]
+        self.cries = self.pkmn_data["cries"]
+        self.flavour_text = self.get_dex_flavor_text()
+
+        self.print_pokemon_data()
+
         self.create_dex_entry_gui()
+
+    def print_pokemon_data(self):
+        print(
+            f"Name: {self.name}\n"
+            f"Dex Num: {self.national_dex_num}\n"
+            f"Artwork: {self.artwork_list}\n"
+            f"Type: {self.type}\n"
+            f"Height: {self.height}\n"
+            f"Weight: {self.weight}\n"
+            f"Abilities: {self.abilities}\n"
+            f"Stats: {self.stats}\n"
+            f"Cries: {self.cries}\n"
+            f"Flavour Text: {self.flavour_text}"
+        )
 
     def get_artwork(self):
         # store the pokemon artwork in a list
         official_artwork = self.pkmn_data["sprites"]["other"][('official'
                                                                '-artwork')]
-        self.artwork_list = []
+        artwork_list = []
         for sprite in official_artwork:
             artwork = official_artwork[f"{sprite}"]
-            self.artwork_list.append(artwork)
+            artwork_list.append(artwork)
+        return artwork_list
 
     def get_dex_flavor_text(self):
         # get the pokdex entries of the desired language
         dex_entries = self.species_data['flavor_text_entries']
         self.pokedex_entries = {}
 
-        self.get_dex_language_entries(dex_entries)
+        all_dex_entries = self.get_dex_language_entries(dex_entries)
 
         # combine duplicate entries (ex: pkmn red & blue have the same entries)
-        self.condensed_dex_entries = []
-        for text in self.pokedex_entries.values():
-            if text not in self.condensed_dex_entries:
-                self.condensed_dex_entries.append(text)
+        condensed_dex_entries = []
+        for text in all_dex_entries.values():
+            if text not in condensed_dex_entries:
+                condensed_dex_entries.append(text)
+
+        return condensed_dex_entries
 
     def get_dex_language_entries(self, dex_entries):
+        flavour_text = {}
         # Get the dex entries of the desired language.
         for entry in dex_entries:
             language_dict = entry.get("language")
@@ -149,7 +188,8 @@ class PokedexManager(PokedexGui):
             text = entry['flavor_text']
             # Remove \n and error values. Missingno???
             entry_text = text.replace("\n", " ").replace("", " ")
-            self.pokedex_entries[game_version] = entry_text
+            flavour_text[game_version] = entry_text
+        return flavour_text
 
 
 pokedex = PokedexManager()
