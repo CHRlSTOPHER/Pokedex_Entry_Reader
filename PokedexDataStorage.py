@@ -57,8 +57,7 @@ class PokedexDataStorage:
             f.write("{}")
             f.close()
         except:
-            # File already exists
-            return
+            return  # File already exists
 
         f = open(filepath)
         file_data = json.load(f)
