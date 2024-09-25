@@ -8,6 +8,7 @@ from tkinter import Tk
 from tkinter import ttk as tk
 
 from ParseWebpage import get_pkmn_api_data
+from PokedexDataStorage import PokedexDataStorage
 
 HTTP_ERROR_MESSAGE = "Dex entry not found for "
 LANGUAGE = "en"
@@ -22,7 +23,7 @@ class PokedexGui:
         self.frame = None
         self.dex_img_label = None
         self.condensed_dex_entries = []
-        self.artwork_list = []
+        self.artwork = []
 
         self.generate()
 
@@ -52,7 +53,7 @@ class PokedexGui:
             self.dex_img_label.destroy()
 
         # load url and apply it to the label widget.
-        reg_art, shiny_art = self.artwork_list
+        reg_art, shiny_art = self.artwork
         reg_img = self.get_url_image(reg_art)
         self.dex_img_label = tk.Label(self.frame, image=reg_img)
         self.dex_img_label.grid(column=1, row=1)
@@ -97,16 +98,20 @@ class PokedexManager(PokedexGui):
         self.pkmn_data = None
         self.species_data = None
 
+        # Dex Data
         self.name = None
-        self.national_dex_num = None
-        self.artwork_list = None
+        self.dex_num = None
+        self.artwork = None
         self.type = []
         self.height = None
         self.weight = None
         self.abilities = []
         self.stats = []
+        self.moves = []
         self.cries = {}
         self.flavour_text = []
+        self.growth_rate = None
+        self.egg_group = []
 
     def create_pokedex_entry(self, entry):
         entry_value = entry.widget.get()
@@ -118,33 +123,29 @@ class PokedexManager(PokedexGui):
             return
 
         self.name = entry_value.capitalize()
-        self.national_dex_num = self.pkmn_data["id"]
-        self.artwork_list = self.get_artwork()
+        self.dex_num = self.pkmn_data["id"]
+        self.artwork = self.get_artwork()
         self.type = self.pkmn_data["types"]
         self.height = self.pkmn_data["height"]/10.0
         self.weight = self.pkmn_data["weight"]/10.0
         self.abilities = self.pkmn_data["abilities"]
         self.stats = self.pkmn_data["stats"]
+        self.moves = self.pkmn_data["moves"]
         self.cries = self.pkmn_data["cries"]
         self.flavour_text = self.get_dex_flavor_text()
 
-        self.print_pokemon_data()
+        self.growth_rate = self.species_data["growth_rate"]
+        self.egg_group = self.species_data["egg_groups"]
 
         self.create_dex_entry_gui()
 
-    def print_pokemon_data(self):
-        print(
-            f"Name: {self.name}\n"
-            f"Dex Num: {self.national_dex_num}\n"
-            f"Artwork: {self.artwork_list}\n"
-            f"Type: {self.type}\n"
-            f"Height: {self.height}\n"
-            f"Weight: {self.weight}\n"
-            f"Abilities: {self.abilities}\n"
-            f"Stats: {self.stats}\n"
-            f"Cries: {self.cries}\n"
-            f"Flavour Text: {self.flavour_text}"
+        # save the pokdex data for future use.
+        data_storage = PokedexDataStorage(
+            self.name, self.dex_num, self.artwork, self.type,
+            self.height, self.weight, self.abilities, self.stats, self.moves,
+            self.cries, self.flavour_text, self.growth_rate, self.egg_group
         )
+        data_storage.save_json_data()
 
     def get_artwork(self):
         # store the pokemon artwork in a list
@@ -190,6 +191,24 @@ class PokedexManager(PokedexGui):
             entry_text = text.replace("\n", " ").replace("", " ")
             flavour_text[game_version] = entry_text
         return flavour_text
+
+    # debug
+    def print_pokemon_data(self):
+        print(
+            f"Name: {self.name}\n"
+            f"Dex Num: {self.dex_num}\n"
+            f"Artwork: {self.artwork}\n"
+            f"Type: {self.type}\n"
+            f"Height: {self.height}\n"
+            f"Weight: {self.weight}\n"
+            f"Abilities: {self.abilities}\n"
+            f"Stats: {self.stats}\n"
+            f"Moves: {self.moves}\n"
+            f"Cries: {self.cries}\n"
+            f"Flavour Text: {self.flavour_text}\n"
+            f"Growth Rate: {self.growth_rate}\n"
+            f"Egg Group: {self.egg_group}"
+        )
 
 
 pokedex = PokedexManager()
