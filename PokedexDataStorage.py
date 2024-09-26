@@ -8,6 +8,7 @@ import json
 # check which generation the pokemon id falls in
 GENERATIONS = [151, 251, 386, 493, 649, 721, 809, 905, 1025]
 DEX_FOLDER = "pokedex_entries"
+DEX_JSON = "pokedex_list"
 
 # store flavour text, name, picture, pokedex id number, height,
 # weight, ability, cry, type, stats
@@ -47,10 +48,14 @@ class PokedexDataStorage:
         }
 
         generation = self.get_generation()
+        pkmn_filename = f"{self.name}.json"
+        filepath = f"{DEX_FOLDER}/gen_{generation}/{pkmn_filename}"
 
-        filename = f"{self.name}.json"
-        filepath = f"{DEX_FOLDER}/gen_{generation}/{filename}"
+        self.generate_pokemon_file(filepath)
+        self.save_pokemon_data(filepath, generation)
+        self.append_pokemon_to_dex_list(generation)
 
+    def generate_pokemon_file(self, filepath):
         # create the file if it doesn't exist
         try:
             f = open(filepath, "x")
@@ -59,14 +64,33 @@ class PokedexDataStorage:
         except:
             return  # File already exists
 
-        f = open(filepath)
-        file_data = json.load(f)
+    def save_pokemon_data(self, filepath, generation):
+        # open the pokemon json file
+        dex_entry_file = open(filepath)
+        file_data = json.load(dex_entry_file)
+        dex_entry_file.close()
 
+        # add and save the dex data into the file
         file_data.update(self.dex_data)
-        with open(filepath, "w") as f:
-            json.dump(file_data, f, indent=2)
+        with open(filepath, "w") as dex_entry_file:
+            json.dump(file_data, dex_entry_file, indent=2)
+        dex_entry_file.close()
 
-    def load_json_data(self):
+    def append_pokemon_to_dex_list(self, generation):
+        # add the pokemon + gen to the pokedex list json.
+        dex_filepath = f"{DEX_JSON}.json"
+        dex_file = open(dex_filepath)
+        file_data = json.load(dex_file)
+        file_data[self.name] = generation
+        dex_file.close()
+
+        with open(dex_filepath, "w") as dex_file:
+            json.dump(file_data, dex_file, indent=2)
+        dex_file.close()
+
+    def attempt_pokemon_data_load(self):
+        # check if desired pokemon has been registed in the dex.
+
         # does not work yet. just copy pasted code atm.
         with open(TRANSFORMS_JSON) as f:
             data = json.load(f)
