@@ -9,6 +9,7 @@ HEADERS = {'User-Agent': 'Mozilla/5.0'}
 
 
 def get_pkmn_api_data(entry_value):
+    print(f"Loading Data for {entry_value}...")
     pkmn_address = ADDRESS.format(POKEMON, entry_value)
     species_address = ADDRESS.format(SPECIES, entry_value)
 

@@ -13,6 +13,21 @@ DEX_JSON = "pokedex_list"
 # store flavour text, name, picture, pokedex id number, height,
 # weight, ability, cry, type, stats
 
+def attempt_pokemon_data_load(pokemon):
+    pokemon = pokemon.title()
+    # check if desired pokemon has been registered in the dex.
+    with open(f"{DEX_JSON}.json") as f:
+        dex_json = json.load(f)
+        if pokemon not in dex_json:
+            return None
+
+    # load the json for the pokemon data we have saved previously.
+    gen = dex_json[pokemon]
+    dex_file = f"{DEX_FOLDER}/gen_{gen}/{pokemon}.json"
+    with open(f"{dex_file}") as f:
+        dex_data_json = json.load(f)
+    return dex_data_json
+
 @dataclass
 class PokedexDataStorage:
 
@@ -87,17 +102,6 @@ class PokedexDataStorage:
         with open(dex_filepath, "w") as dex_file:
             json.dump(file_data, dex_file, indent=2)
         dex_file.close()
-
-    def attempt_pokemon_data_load(self):
-        # check if desired pokemon has been registed in the dex.
-
-        # does not work yet. just copy pasted code atm.
-        with open(TRANSFORMS_JSON) as f:
-            data = json.load(f)
-
-        nodes, names = self.get_all_nodes()
-        for node in nodes:
-            node.set_pos_hpr_scale(*data[node.get_name()])
 
     # determine which generation the pokemon is from.
     def get_generation(self):

@@ -13,6 +13,9 @@ WORDWRAP = 120
 class PokedexGui:
 
     def __init__(self):
+        self.pkmn_data = None
+        self.species_data = None
+        self.entry_value = None
         self.dex_text_label = None
         self.entry = None
         self.frame = None
