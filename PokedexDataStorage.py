@@ -10,8 +10,6 @@ GENERATIONS = [151, 251, 386, 493, 649, 721, 809, 905, 1025]
 DEX_FOLDER = "pokedex_entries"
 DEX_JSON = "pokedex_list"
 
-# store flavour text, name, picture, pokedex id number, height,
-# weight, ability, cry, type, stats
 
 def attempt_pokemon_data_load(pokemon):
     pokemon = pokemon.title()
@@ -28,9 +26,9 @@ def attempt_pokemon_data_load(pokemon):
         dex_data_json = json.load(f)
     return dex_data_json
 
+
 @dataclass
 class PokedexDataStorage:
-
     name: str
     dex_num: int
     artwork: list
@@ -44,6 +42,7 @@ class PokedexDataStorage:
     flavour_text: list
     growth_rate: dict
     egg_group: list
+    gender_ratio: int
 
     def save_json_data(self):
         self.dex_data = {
@@ -59,7 +58,8 @@ class PokedexDataStorage:
             "cries": self.cries,
             "flavour_text": self.flavour_text,
             "growth_rate": self.growth_rate,
-            "egg_group": self.egg_group
+            "egg_group": self.egg_group,
+            "gender_rate": self.gender_ratio
         }
 
         generation = self.get_generation()
@@ -76,7 +76,8 @@ class PokedexDataStorage:
             f = open(filepath, "x")
             f.write("{}")
             f.close()
-        except:
+        except FileExistsError as FEE:
+            '''File exists. No need to print the error. We expect this.'''
             return  # File already exists
 
     def save_pokemon_data(self, filepath, generation):

@@ -1,5 +1,6 @@
-from ParseWebpage import get_pkmn_api_data
-from PokedexDataStorage import PokedexDataStorage, attempt_pokemon_data_load
+from ParseWebpage import get_api_data
+from PokedexDataStorage import (PokedexDataStorage,
+                                attempt_pokemon_data_load)
 from PokedexGui import PokedexGui
 
 HTTP_ERROR_MESSAGE = "Dex entry not found for "
@@ -18,6 +19,14 @@ CRIES = "cries"
 FLAVOUR_TEXT = "flavour_text"
 GROWTH_RATE = "growth_rate"
 EGG_GROUP = "egg_group"
+GENDER = "gender_rate"
+
+POKEMON = "pokemon"
+SPECIES = "pokemon-species"
+
+# default value for debugging
+DEBUG = False
+DEFAULT_POKEMON = "bulbasaur"
 
 
 class PokedexManager(PokedexGui):
@@ -27,37 +36,46 @@ class PokedexManager(PokedexGui):
 
         # Dex Data
         self.name = None
-        self.dex_num = None
-        self.artwork = None
+        self.dex_num = 0
+        self.artwork = []
         self.type = []
-        self.height = None
-        self.weight = None
+        self.height = 0
+        self.weight = 0
         self.abilities = []
         self.stats = []
         self.moves = []
         self.cries = {}
         self.flavour_text = []
-        self.growth_rate = None
+        self.growth_rate = {}
         self.egg_group = []
+        self.gender_ratio = 0
 
     def create_pokedex_entry(self, entry):
         entry_value = entry.widget.get()
+        if DEBUG:
+            entry_value = DEFAULT_POKEMON
 
         # check if the entry already exists in our saved dex.
         dex_data = attempt_pokemon_data_load(entry_value)
 
+        # call the api if we do not already have the pokemon saved.
         if not dex_data:
-            self.pkmn_data, self.species_data = get_pkmn_api_data(entry_value)
+            print(f"Loading Data for {entry_value}...")
+            self.pkmn_data = get_api_data(entry_value, POKEMON)
+            self.species_data =  get_api_data(entry_value, SPECIES)
 
-        # check if data was succesfully returned.
-        if not self.pkmn_data and not self.species_data and not dex_data:
+        # verify that we have successfully retrieved the data.
+        data_list = [dex_data, self.pkmn_data, self.species_data]
+        hasData = self.verify_data(data_list)
+        if not hasData:
             print(f'{HTTP_ERROR_MESSAGE}"{self.entry_value}".')
             return
 
+        # define the dex variables based on whether we have api data or not.
         if dex_data:
             self.define_dex_data(dex_data)
         else:
-            self.define_web_data(entry_value)
+            self.define_api_data(entry_value)
 
         self.create_dex_entry_gui()
 
@@ -65,9 +83,18 @@ class PokedexManager(PokedexGui):
         data_storage = PokedexDataStorage(
             self.name, self.dex_num, self.artwork, self.type,
             self.height, self.weight, self.abilities, self.stats, self.moves,
-            self.cries, self.flavour_text, self.growth_rate, self.egg_group
+            self.cries, self.flavour_text, self.growth_rate, self.egg_group,
+            self.gender_ratio
         )
         data_storage.save_json_data()
+
+    def verify_data(self, data_list):
+        data_bool = False
+        for data in data_list:
+            if data:
+                data_bool = True
+
+        return data_bool
 
     def define_dex_data(self, dex_data):
         self.name = dex_data.get(NAME)
@@ -81,11 +108,11 @@ class PokedexManager(PokedexGui):
         self.moves = dex_data.get(MOVES)
         self.cries = dex_data.get(CRIES)
         self.flavour_text = dex_data.get(FLAVOUR_TEXT)
-
         self.growth_rate = dex_data.get(GROWTH_RATE)
         self.egg_group = dex_data.get(EGG_GROUP)
+        self.gender_ratio = dex_data.get(GENDER)
 
-    def define_web_data(self, entry_value):
+    def define_api_data(self, entry_value):
         self.name = entry_value.capitalize()
         self.dex_num = self.pkmn_data["id"]
         self.artwork = self.get_artwork()
@@ -97,9 +124,10 @@ class PokedexManager(PokedexGui):
         self.moves = self.pkmn_data[MOVES]
         self.cries = self.pkmn_data[CRIES]
         self.flavour_text = self.get_dex_flavor_text()
-
         self.growth_rate = self.species_data[GROWTH_RATE]
         self.egg_group = self.species_data["egg_groups"]
+        self.gender_ratio = self.species_data["gender_rate"]
+
 
     def get_artwork(self):
         # store the pokemon artwork in a list
@@ -142,6 +170,7 @@ class PokedexManager(PokedexGui):
             # Remove \n and error values. Missingno???
             entry_text = text.replace("\n", " ").replace("", " ")
             flavour_text[game_version] = entry_text
+
         return flavour_text
 
     # debug
