@@ -12456,5 +12456,6 @@
       "name": "ground",
       "url": "https://pokeapi.co/api/v2/egg-group/5/"
     }
-  ]
+  ],
+  "gender_rate": 6
 }
