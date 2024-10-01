@@ -4,8 +4,9 @@ from PIL import ImageTk, Image
 
 import urllib.request
 
-from tkinter import Tk
-from tkinter import ttk as tk
+import tkinter as tk
+# from tkinter import ttk
+import ttkbootstrap as ttk
 
 WORDWRAP = 120
 
@@ -26,59 +27,47 @@ class PokedexGui:
         self.generate()
 
     def generate(self):
-        # main frame
-        root = Tk()
-        self.frame = tk.Frame(root, padding=10)
+        self.load_window()
+        self.load_entry()
+        self.window.mainloop()
+
+    def load_window(self):
+        self.window = tk.Tk()
+        self.frame = ttk.Frame(self.window, padding=10)
         self.frame.grid()
 
-        # pokemon name label and entry box
-        tk.Label(self.frame, text="Choose a Pokemon").grid(column=0, row=0)
-        tk.Entry(self.frame).grid(column=1, row=0, padx=5)
-        root.bind("<Return>", self.create_pokedex_entry)
-
-        # text for pokedex flavor text
-        self.dex_text_label = tk.Label(self.frame, font=("Arial", 11))
-        self.dex_text_label.grid(column=0, row=1, pady=25)
-
-        root.mainloop()
+    def load_entry(self):
+        ttk.Label(self.frame, text="Choose a Pokemon").grid(column=0, row=0)
+        ttk.Entry(self.frame).grid(column=1, row=0, padx=5)
+        self.window.bind("<Return>", self.create_pokedex_entry)
 
     def create_dex_entry_gui(self):
-        # set all the entry texts on the label
-        entry_texts = self.prettify_entries()
-        self.dex_text_label['text'] = entry_texts
+        self.load_descriptions()
+        self.load_stats()
+        self.load_moves()
+        self.load_flavour_text()
+        self.load_sprites()
 
-        if self.dex_img_label:
-            self.dex_img_label.destroy()
+    def load_descriptions(self):
+        pass
 
+    def load_stats(self):
+        pass
+
+    def load_moves(self):
+        pass
+
+    def load_flavour_text(self):
+        pass
+
+    def load_sprites(self):
         # load url and apply it to the label widget.
         reg_art, shiny_art = self.artwork
         reg_img = self.get_url_image(reg_art)
-        self.dex_img_label = tk.Label(self.frame, image=reg_img)
-        self.dex_img_label.grid(column=1, row=1)
-        self.dex_img_label.image = reg_img
-
-    def prettify_entries(self):
-        # construct text for tkinter label
-        entry_texts = ""
-        for entry in self.condensed_dex_entries:
-            # check which entries are too long.
-            if len(entry) > WORDWRAP:
-                spaces = entry.count(" ")
-                middle = round(spaces / 2)
-                middle_index = self.find_nth(entry, middle)
-                # insert a \n in the middle of the long sentence.
-                entry = entry[:middle_index] + "\n" + entry[middle_index:]
-
-            # space out the entries for readability
-            entry_texts += entry + "\n\n"
-
-        return entry_texts[:-2]
-
-    def find_nth(self, string, n):
-        parts = string.split(" ", n + 1)
-        if len(parts) <= n + 1:
-            return -1
-        return len(string) - len(parts[-1]) - len(" ")
+        # shiny_img = self.get_url_image(shiny_art)
+        # self.dex_img_label = tk.Label(self.frame, image=reg_img)
+        # self.dex_img_label.grid(column=1, row=1)
+        # self.dex_img_label.image = reg_img
 
     def get_url_image(self, url):
         raw_data = urllib.request.urlopen(url).read()
