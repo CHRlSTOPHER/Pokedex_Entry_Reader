@@ -18,4 +18,4 @@ def get_api_data(entry_value, resource):
 
     except HTTPError as http:
         print(http)
-        return None, None
+        return None
