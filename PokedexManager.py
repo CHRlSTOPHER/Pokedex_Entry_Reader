@@ -85,7 +85,7 @@ class PokedexManager(PokedexGui):
         )
         self.data_storage.save_json_data()
 
-        self.update_gui()
+        self.update_gui(self.data_storage)
 
     def verify_data(self, data_list):
         data_bool = False
