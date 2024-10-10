@@ -1,7 +1,7 @@
 from ParseWebpage import get_api_data
 from PokedexDataStorage import (PokedexDataStorage,
                                 attempt_pokemon_data_load)
-from PokedexGui import PokedexGui
+from PokedexGUI.GuiFramework import GuiFramework
 
 HTTP_ERROR_MESSAGE = "Dex entry not found for "
 LANGUAGE = "en"
@@ -25,11 +25,11 @@ POKEMON = "pokemon"
 SPECIES = "pokemon-species"
 
 
-class PokedexManager(PokedexGui):
+class PokedexManager(GuiFramework):
 
     def __init__(self):
         # Dex Data
-        PokedexGui.__init__(self)
+        GuiFramework.__init__(self)
         self.pkmn_data = None
         self.species_data = None
         self.name = None
