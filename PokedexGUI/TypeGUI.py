@@ -45,12 +45,12 @@ def update_types_labels(types, type_frame, type_1_label, type_2_label):
     # generate new labels depending amount of types.
     Z = 6
     type_1_label = tb.Label(type_frame, font=(FONT, FONT_SIZE, "bold"))
-    type_1_label.grid(row=0, column=0, padx=(Z, Z), pady=(0, 10), sticky='e')
+    type_1_label.grid(row=0, column=0, padx=(Z, Z), pady=(0, 9), sticky='ne')
 
     if len(types) > 1:
         type_2_label = tb.Label(type_frame, font=(FONT, FONT_SIZE, "bold"))
-        type_2_label.grid(row=0, column=1, padx=(Z, Z), pady=(0, 10),
-                               sticky='w')
+        type_2_label.grid(row=0, column=1, padx=(Z, Z), pady=(0, 9),
+                               sticky='nw')
 
     # set the name and add the bg color based on the type
     i = 0

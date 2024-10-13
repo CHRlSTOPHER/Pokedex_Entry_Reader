@@ -11,7 +11,7 @@ FONT = "courier"
 TYPE_FONT_SIZE = 13
 
 DEBUG_WINDOW = "200x200+1452+216"
-STARTER = "espeon"
+STARTER = "groudon"
 ONE_TYPE_X = (115, 10)
 TWO_TYPE_X = (65, 10)
 
@@ -70,7 +70,7 @@ class GuiFramework(tk.Tk):
 
         self.art_frame, self.art_label = create_art_frame(self.left_window)
         self.type_frame = create_type_frame(self.left_window)
-        # self.ability_frame = create_ability_frame(self.left_window)
+        self.ability_frame = create_ability_frame(self.left_window)
 
     def middle_gui(self):
         pass
@@ -85,3 +85,5 @@ class GuiFramework(tk.Tk):
         self.type_1_label, self.type_2_label = update_types_labels(
             data.type, self.type_frame, self.type_1_label, self.type_2_label
         )
+
+        load_ability_labels(self.ability_frame, data.abilities)
