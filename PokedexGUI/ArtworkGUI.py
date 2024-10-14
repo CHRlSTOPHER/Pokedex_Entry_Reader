@@ -7,7 +7,7 @@ from PIL import ImageTk, Image
 import urllib.request
 
 
-ART_RES = 320
+ART_RES = 360
 
 
 def create_art_frame(left_window):
@@ -37,7 +37,7 @@ def load_artwork_description(data, art_frame):
     elif data.dex_num < 100:
         extra_zeros = "0"
 
-    art_frame.config(text=f"   No.{extra_zeros}{data.dex_num}  "
+    art_frame.config(text=f"   No.{extra_zeros}{data.dex_num}    "
                                f"     {data.name}   ")
 
 

@@ -1,6 +1,7 @@
 import ttkbootstrap as tb
 
 HIDDEN_COLOR = "#00ADAD"
+FONT = "Trebuchet MS"
 FONT_SIZE = 13
 
 GRID_STICKY = {
@@ -34,7 +35,7 @@ def load_ability_labels(ability_frame, abilities):
         name = name.title()
 
         ability_label = tb.Label(ability_frame, text=name,
-                                 font=("arial", FONT_SIZE, "bold"))
+                                 font=(FONT, FONT_SIZE, "bold"))
         if hidden:
             ability_label.configure(foreground=HIDDEN_COLOR)
 

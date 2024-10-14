@@ -5,13 +5,13 @@ from PokedexGUI.TypeGUI import *
 from PokedexGUI.AbilityGUI import *
 
 WORDWRAP = 120
-WINDOW_SIZE = "1280x720"
+WINDOW_SIZE = "1600x900"
 TITLE = "Pokedex Entries"
-FONT = "courier"
-TYPE_FONT_SIZE = 13
+FONT = "lucida console"
+FONT_SIZE = 15
 
 DEBUG_WINDOW = "200x200+1452+216"
-STARTER = "groudon"
+STARTER = "dragapult"
 ONE_TYPE_X = (115, 10)
 TWO_TYPE_X = (65, 10)
 
@@ -60,7 +60,7 @@ class GuiFramework(tk.Tk):
         self.frame_label_style = tb.Style()
         self.frame_label_style.theme_use("cosmo")
         self.frame_label_style.configure('frame.TLabelframe.Label',
-                                         font=(FONT, 15, 'bold'))
+                                         font=(FONT, FONT_SIZE))
         self.frame_label_style.configure('frame.TLabelframe',
                                          borderwidth=4, relief="solid")
 

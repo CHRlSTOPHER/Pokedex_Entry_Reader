@@ -21,7 +21,7 @@ TYPE_COLORS = {
     'poison': "9141CB",
 }
 
-FONT = "courier"
+FONT = "Trebuchet MS"
 FONT_SIZE = 13
 
 
@@ -29,7 +29,7 @@ def create_type_frame(left_window):
     # Type PokedexGUI
     type_frame = tb.LabelFrame(left_window, text=" Type ",
                                style="frame.TLabelframe")
-    type_frame.grid(column=0, row=1, sticky="ew")
+    type_frame.grid(column=0, row=1, sticky="ew", pady=(10, 10))
     type_frame.grid_columnconfigure(0, weight=1)
     type_frame.grid_columnconfigure(1, weight=1)
     return type_frame
