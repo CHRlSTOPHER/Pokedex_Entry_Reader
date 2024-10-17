@@ -37,7 +37,7 @@ class TypeGUI(tb.LabelFrame):
         self.grid_frame()
 
     def grid_frame(self):
-        self.grid(column=0, row=1, sticky="ew", pady=(10, 10))
+        self.grid(column=0, row=1, sticky="ew", pady=(5, 5))
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
 

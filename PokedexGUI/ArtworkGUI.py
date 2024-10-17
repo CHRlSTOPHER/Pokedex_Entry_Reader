@@ -39,8 +39,8 @@ class ArtworkGUI(tb.LabelFrame):
         elif data.dex_num < 100:
             extra_zeros = "0"
 
-        self.config(text=f"   No.{extra_zeros}{data.dex_num}  "
-                              f"   {data.name}   ")
+        dex_num = f"{extra_zeros}{data.dex_num}"
+        self.config(text=f"  No.{dex_num}   {data.name}  ")
 
     def get_url_image(self, url):
         raw_data = urllib.request.urlopen(url).read()

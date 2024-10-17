@@ -8,7 +8,7 @@ from PokedexGUI.AbilityGUI import AbilityGUI
 WORDWRAP = 120
 WINDOW_SIZE = "1600x900"
 TITLE = "Pokedex Entries"
-FONT = "lucida console"
+FONT = "Trebuchet MS"
 FONT_SIZE = 14
 
 DEBUG_WINDOW = "200x200+1452+216"
@@ -66,7 +66,7 @@ class GuiFramework(tk.Tk):
                                          borderwidth=4, relief="solid")
 
     def left_gui(self):
-        self.left_window = tk.Frame(self, bg="black", padx=15, pady=10)
+        self.left_window = tk.Frame(self, bg="black", padx=15, pady=5)
         self.left_window.grid(column=0, row=0)
 
         self.artwork_gui = ArtworkGUI(self.left_window)
