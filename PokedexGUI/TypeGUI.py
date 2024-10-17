@@ -23,42 +23,46 @@ TYPE_COLORS = {
 
 FONT = "Trebuchet MS"
 FONT_SIZE = 13
+X = 4
 
 
-def create_type_frame(left_window):
-    # Type PokedexGUI
-    type_frame = tb.LabelFrame(left_window, text=" Type ",
-                               style="frame.TLabelframe")
-    type_frame.grid(column=0, row=1, sticky="ew", pady=(10, 10))
-    type_frame.grid_columnconfigure(0, weight=1)
-    type_frame.grid_columnconfigure(1, weight=1)
-    return type_frame
+class TypeGUI(tb.LabelFrame):
 
+    def __init__(self, left_window):
+        super().__init__(left_window, text=" Types ",
+                         style="frame.TLabelframe", labelanchor="n")
+        self.type_1_label = None
+        self.type_2_label = None
 
-def update_types_labels(types, type_frame, type_1_label, type_2_label):
-    # delete pre-existing labels.
-    if type_1_label:
-        type_1_label.grid_forget()
-    if type_2_label:
-        type_2_label.grid_forget()
+        self.grid_frame()
 
-    # generate new labels depending amount of types.
-    Z = 6
-    type_1_label = tb.Label(type_frame, font=(FONT, FONT_SIZE, "bold"))
-    type_1_label.grid(row=0, column=0, padx=(Z, Z), pady=(0, 9), sticky='ne')
+    def grid_frame(self):
+        self.grid(column=0, row=1, sticky="ew", pady=(10, 10))
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
 
-    if len(types) > 1:
-        type_2_label = tb.Label(type_frame, font=(FONT, FONT_SIZE, "bold"))
-        type_2_label.grid(row=0, column=1, padx=(Z, Z), pady=(0, 9),
-                               sticky='nw')
+    def update_labels(self, types):
+        # delete pre-existing labels.
+        if self.type_1_label:
+            self.type_1_label.grid_forget()
+        if self.type_2_label:
+            self.type_2_label.grid_forget()
 
-    # set the name and add the bg color based on the type
-    i = 0
-    labels = [type_1_label, type_2_label]
-    for type in types:
-        type = type.get("type").get('name')
-        labels[i].configure(text=f" {type.title()} ", foreground="white",
-                            background=f"#{TYPE_COLORS.get(type)}")
-        i += 1
+        # generate new labels depending amount of types.
+        self.type_1_label = tb.Label(self, font=(FONT, FONT_SIZE, "bold"))
+        self.type_1_label.grid(row=0, column=0, padx=(X, X), pady=(4, 10),
+                          sticky='ne')
 
-    return type_1_label, type_2_label
+        if len(types) > 1:
+            self.type_2_label = tb.Label(self, font=(FONT, FONT_SIZE, "bold"))
+            self.type_2_label.grid(row=0, column=1, padx=(X, X), pady=(4, 10),
+                                   sticky='nw')
+
+        # set the name and add the bg color based on the type
+        i = 0
+        labels = [self.type_1_label, self.type_2_label]
+        for type in types:
+            type = type.get("type").get('name')
+            labels[i].configure(text=f" {type.title()} ", foreground="white",
+                                background=f"#{TYPE_COLORS.get(type)}")
+            i += 1

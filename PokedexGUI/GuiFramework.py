@@ -1,17 +1,18 @@
 import tkinter as tk
+import ttkbootstrap as tb
 
-from PokedexGUI.ArtworkGUI import *
-from PokedexGUI.TypeGUI import *
-from PokedexGUI.AbilityGUI import *
+from PokedexGUI.ArtworkGUI import ArtworkGUI
+from PokedexGUI.TypeGUI import TypeGUI
+from PokedexGUI.AbilityGUI import AbilityGUI
 
 WORDWRAP = 120
 WINDOW_SIZE = "1600x900"
 TITLE = "Pokedex Entries"
 FONT = "lucida console"
-FONT_SIZE = 15
+FONT_SIZE = 14
 
 DEBUG_WINDOW = "200x200+1452+216"
-STARTER = "dragapult"
+STARTER = "ninetales"
 ONE_TYPE_X = (115, 10)
 TWO_TYPE_X = (65, 10)
 
@@ -68,9 +69,9 @@ class GuiFramework(tk.Tk):
         self.left_window = tk.Frame(self, bg="black", padx=15, pady=10)
         self.left_window.grid(column=0, row=0)
 
-        self.art_frame, self.art_label = create_art_frame(self.left_window)
-        self.type_frame = create_type_frame(self.left_window)
-        self.ability_frame = create_ability_frame(self.left_window)
+        self.artwork_gui = ArtworkGUI(self.left_window)
+        self.type_gui = TypeGUI(self.left_window)
+        self.ability_gui = AbilityGUI(self.left_window)
 
     def middle_gui(self):
         pass
@@ -79,11 +80,8 @@ class GuiFramework(tk.Tk):
         pass
 
     def update_gui(self, data):
-        load_artwork(self.artwork, self.art_label)
-        load_artwork_description(data, self.art_frame)
+        self.artwork_gui.load_artwork(self.artwork)
+        self.artwork_gui.load_artwork_description(data)
+        self.type_gui.update_labels(data.type)
 
-        self.type_1_label, self.type_2_label = update_types_labels(
-            data.type, self.type_frame, self.type_1_label, self.type_2_label
-        )
-
-        load_ability_labels(self.ability_frame, data.abilities)
+        self.ability_gui.load_labels(data.abilities)
