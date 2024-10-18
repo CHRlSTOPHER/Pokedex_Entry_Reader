@@ -31,6 +31,7 @@ def attempt_pokemon_data_load(pokemon):
 class PokedexDataStorage:
     name: str
     dex_num: int
+    genera: str
     artwork: list
     type: list
     height: float
@@ -48,6 +49,7 @@ class PokedexDataStorage:
         self.dex_data = {
             "name": self.name,
             "dex_num": self.dex_num,
+            "genera": self.genera,
             "artwork": self.artwork,
             "type": self.type,
             "height": self.height,

@@ -16,7 +16,7 @@ class AbilityGUI(tb.LabelFrame):
     def __init__(self, left_window):
         super().__init__(left_window, text=" Abilities ",
                          style="frame.TLabelframe", labelanchor="n")
-        self.grid(column=0, row=2, sticky="ew")
+        self.grid(column=0, row=2, sticky="ew", columnspan=2)
         self.ability_labels = []
 
     def load_labels(self, abilities):

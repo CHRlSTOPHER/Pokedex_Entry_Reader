@@ -4,6 +4,7 @@ import ttkbootstrap as tb
 from PokedexGUI.ArtworkGUI import ArtworkGUI
 from PokedexGUI.TypeGUI import TypeGUI
 from PokedexGUI.AbilityGUI import AbilityGUI
+from PokedexGUI.HeightWeightGUI import HeightWeightGUI
 
 WORDWRAP = 120
 WINDOW_SIZE = "1600x900"
@@ -72,6 +73,7 @@ class GuiFramework(tk.Tk):
         self.artwork_gui = ArtworkGUI(self.left_window)
         self.type_gui = TypeGUI(self.left_window)
         self.ability_gui = AbilityGUI(self.left_window)
+        self.hweight_gui = HeightWeightGUI(self.left_window)
 
     def middle_gui(self):
         pass
@@ -83,5 +85,5 @@ class GuiFramework(tk.Tk):
         self.artwork_gui.load_artwork(self.artwork)
         self.artwork_gui.load_artwork_description(data)
         self.type_gui.update_labels(data.type)
-
         self.ability_gui.load_labels(data.abilities)
+        self.hweight_gui.update_hweight(data.height, data.weight)

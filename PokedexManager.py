@@ -8,6 +8,7 @@ LANGUAGE = "en"
 
 NAME = "name"
 DEX_NUM = "dex_num"
+GENERA = "genera"
 ARTWORK = "artwork"
 TYPE = "type"
 HEIGHT = "height"
@@ -34,6 +35,7 @@ class PokedexManager(GuiFramework):
         self.species_data = None
         self.name = None
         self.dex_num = 0
+        self.genera = None
         self.artwork = []
         self.type = []
         self.height = 0
@@ -78,7 +80,7 @@ class PokedexManager(GuiFramework):
 
         # save the pokedex data for future use.
         self.data_storage = PokedexDataStorage(
-            self.name, self.dex_num, self.artwork, self.type,
+            self.name, self.dex_num, self.genera, self.artwork, self.type,
             self.height, self.weight, self.abilities, self.stats, self.moves,
             self.cries, self.flavour_text, self.growth_rate, self.egg_group,
             self.gender_ratio
@@ -98,6 +100,7 @@ class PokedexManager(GuiFramework):
     def define_dex_data(self, dex_data):
         self.name = dex_data.get(NAME)
         self.dex_num = dex_data.get(DEX_NUM)
+        self.genera = dex_data.get(GENERA)
         self.artwork = dex_data.get(ARTWORK)
         self.type = dex_data.get(TYPE)
         self.height = dex_data.get(HEIGHT)
@@ -113,19 +116,20 @@ class PokedexManager(GuiFramework):
 
     def define_api_data(self, entry_value):
         self.name = entry_value.capitalize()
-        self.dex_num = self.pkmn_data["id"]
+        self.dex_num = self.pkmn_data.get("id")
+        self.genera = self.get_genera()
         self.artwork = self.get_artwork()
-        self.type = self.pkmn_data["types"]
-        self.height = self.pkmn_data[HEIGHT] / 10.0
-        self.weight = self.pkmn_data[WEIGHT] / 10.0
-        self.abilities = self.pkmn_data[ABILITIES]
-        self.stats = self.pkmn_data[STATS]
-        self.moves = self.pkmn_data[MOVES]
-        self.cries = self.pkmn_data[CRIES]
+        self.type = self.pkmn_data.get("types")
+        self.height = self.pkmn_data.get(HEIGHT) / 10.0
+        self.weight = self.pkmn_data.get(WEIGHT) / 10.0
+        self.abilities = self.pkmn_data.get(ABILITIES)
+        self.stats = self.pkmn_data.get(STATS)
+        self.moves = self.pkmn_data.get(MOVES)
+        self.cries = self.pkmn_data.get(CRIES)
         self.flavour_text = self.get_dex_flavor_text()
-        self.growth_rate = self.species_data[GROWTH_RATE]
-        self.egg_group = self.species_data["egg_groups"]
-        self.gender_ratio = self.species_data["gender_rate"]
+        self.growth_rate = self.species_data.get(GROWTH_RATE)
+        self.egg_group = self.species_data.get("egg_groups")
+        self.gender_ratio = self.species_data.get("gender_rate")
 
     def get_artwork(self):
         # store the pokemon artwork in a list
@@ -136,6 +140,13 @@ class PokedexManager(GuiFramework):
             artwork = official_artwork[f"{sprite}"]
             artwork_list.append(artwork)
         return artwork_list
+
+    def get_genera(self):
+        genera = self.species_data.get(GENERA)
+        for genus in genera:
+            language = genus.get("language").get("name")
+            if language == LANGUAGE:
+                return genus.get("genus")
 
     def get_dex_flavor_text(self):
         # get the pokedex entries of the desired language

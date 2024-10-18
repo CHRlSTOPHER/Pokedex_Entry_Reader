@@ -1,4 +1,5 @@
 import ttkbootstrap as tb
+from tkinter import CENTER
 
 import io
 
@@ -7,6 +8,8 @@ from PIL import ImageTk, Image
 import urllib.request
 
 ART_RES = 360
+FONT = "Trebuchet MS"
+FONT_SIZE = 11
 
 
 class ArtworkGUI(tb.LabelFrame):
@@ -14,15 +17,18 @@ class ArtworkGUI(tb.LabelFrame):
     def __init__(self, left_window):
         super().__init__(left_window, text="ZAMN",
                          style="frame.TLabelframe", labelanchor="n")
-        self.grid(column=0, row=0)
+        self.grid(column=0, row=0, columnspan=2)
 
         self.left_window = left_window
         self.art_label = None
         self.generate_label()
 
     def generate_label(self):
-        self.art_label = tb.Label(self)
-        self.art_label.pack()
+        self.art_label = tb.Label(self, padding=(5, -5, 5, 0))
+        self.genera_label = tb.Label(self, padding=(0, -6))
+
+        self.genera_label.grid(row=0)
+        self.art_label.grid(row=1)
 
     def load_artwork(self, artwork):
         # load url and apply it to the label widget.
@@ -41,6 +47,7 @@ class ArtworkGUI(tb.LabelFrame):
 
         dex_num = f"{extra_zeros}{data.dex_num}"
         self.config(text=f"  No.{dex_num}   {data.name}  ")
+        self.genera_label.config(text=f"{data.genera}", font=(FONT, FONT_SIZE))
 
     def get_url_image(self, url):
         raw_data = urllib.request.urlopen(url).read()
