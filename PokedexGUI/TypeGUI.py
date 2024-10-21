@@ -30,7 +30,7 @@ FRAME_PAD = 2
 class TypeGUI(tb.LabelFrame):
 
     def __init__(self, left_window):
-        super().__init__(left_window, text=" Types ",
+        super().__init__(left_window, text=" Types ", padding=(0, -2, 0, -2),
                          style="frame.TLabelframe", labelanchor="n")
         self.type_1_label = None
         self.type_2_label = None
@@ -50,13 +50,15 @@ class TypeGUI(tb.LabelFrame):
             self.type_2_label.grid_forget()
 
         # generate new labels depending amount of types.
-        self.type_1_label = tb.Label(self, font=(FONT, FONT_SIZE, "bold"))
-        self.type_1_label.grid(row=0, column=0, padx=(X, X), pady=(4, 10),
+        self.type_1_label = tb.Label(self, font=(FONT, FONT_SIZE, "bold"),
+                                     padding=(0, -1, 0, -1))
+        self.type_1_label.grid(row=0, column=0, padx=(X, X), pady=(1, 8),
                           sticky='ne')
 
         if len(types) > 1:
-            self.type_2_label = tb.Label(self, font=(FONT, FONT_SIZE, "bold"))
-            self.type_2_label.grid(row=0, column=1, padx=(X, X), pady=(4, 10),
+            self.type_2_label = tb.Label(self, font=(FONT, FONT_SIZE, "bold"),
+                                         padding=(0, -1, 0, -1))
+            self.type_2_label.grid(row=0, column=1, padx=(X, X), pady=(1, 8),
                                    sticky='nw')
 
         # set the name and add the bg color based on the type

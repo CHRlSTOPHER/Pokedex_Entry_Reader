@@ -5,15 +5,17 @@ from PokedexGUI.ArtworkGUI import ArtworkGUI
 from PokedexGUI.TypeGUI import TypeGUI
 from PokedexGUI.AbilityGUI import AbilityGUI
 from PokedexGUI.HeightWeightGUI import HeightWeightGUI
+from PokedexGUI.GrowthRateGUI import GrowthRateGUI
+from PokedexGUI.EggGroupGUI import EggGroupGUI
 
 WORDWRAP = 120
-WINDOW_SIZE = "1600x900"
+WINDOW_SIZE = "1200x720"
 TITLE = "Pokedex Entries"
 FONT = "Trebuchet MS"
-FONT_SIZE = 14
+FONT_SIZE = 13
 
 DEBUG_WINDOW = "200x200+1452+216"
-STARTER = "ninetales"
+STARTER = "stakataka"
 ONE_TYPE_X = (115, 10)
 TWO_TYPE_X = (65, 10)
 
@@ -62,7 +64,7 @@ class GuiFramework(tk.Tk):
         self.frame_label_style = tb.Style()
         self.frame_label_style.theme_use("cosmo")
         self.frame_label_style.configure('frame.TLabelframe.Label',
-                                         font=(FONT, FONT_SIZE))
+                                         font=(FONT, FONT_SIZE, "bold"))
         self.frame_label_style.configure('frame.TLabelframe',
                                          borderwidth=4, relief="solid")
 
@@ -74,6 +76,8 @@ class GuiFramework(tk.Tk):
         self.type_gui = TypeGUI(self.left_window)
         self.ability_gui = AbilityGUI(self.left_window)
         self.hweight_gui = HeightWeightGUI(self.left_window)
+        self.growth_gui = GrowthRateGUI(self.left_window)
+        self.egg_group_gui = EggGroupGUI(self.left_window)
 
     def middle_gui(self):
         pass
@@ -87,3 +91,7 @@ class GuiFramework(tk.Tk):
         self.type_gui.update_labels(data.type)
         self.ability_gui.load_labels(data.abilities)
         self.hweight_gui.update_hweight(data.height, data.weight)
+        self.growth_gui.update_growth_rate(data.growth_rate)
+        self.egg_group_gui.update_egg_group(data.egg_group)
+
+        print(data.stats)

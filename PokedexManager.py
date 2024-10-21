@@ -11,6 +11,7 @@ DEX_NUM = "dex_num"
 GENERA = "genera"
 ARTWORK = "artwork"
 TYPE = "type"
+CAPTURE = "capture_rate"
 HEIGHT = "height"
 WEIGHT = "weight"
 ABILITIES = "abilities"
@@ -81,9 +82,9 @@ class PokedexManager(GuiFramework):
         # save the pokedex data for future use.
         self.data_storage = PokedexDataStorage(
             self.name, self.dex_num, self.genera, self.artwork, self.type,
-            self.height, self.weight, self.abilities, self.stats, self.moves,
-            self.cries, self.flavour_text, self.growth_rate, self.egg_group,
-            self.gender_ratio
+            self.capture_rate, self.height, self.weight, self.abilities,
+            self.stats, self.moves, self.cries, self.flavour_text,
+            self.growth_rate, self.egg_group, self.gender_ratio
         )
         self.data_storage.save_json_data()
 
@@ -103,6 +104,7 @@ class PokedexManager(GuiFramework):
         self.genera = dex_data.get(GENERA)
         self.artwork = dex_data.get(ARTWORK)
         self.type = dex_data.get(TYPE)
+        self.capture_rate = dex_data.get(CAPTURE)
         self.height = dex_data.get(HEIGHT)
         self.weight = dex_data.get(WEIGHT)
         self.abilities = dex_data.get(ABILITIES)
@@ -120,6 +122,7 @@ class PokedexManager(GuiFramework):
         self.genera = self.get_genera()
         self.artwork = self.get_artwork()
         self.type = self.pkmn_data.get("types")
+        self.capture_rate = self.species_data.get(CAPTURE)
         self.height = self.pkmn_data.get(HEIGHT) / 10.0
         self.weight = self.pkmn_data.get(WEIGHT) / 10.0
         self.abilities = self.pkmn_data.get(ABILITIES)

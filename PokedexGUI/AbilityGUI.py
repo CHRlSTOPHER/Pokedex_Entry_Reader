@@ -15,6 +15,7 @@ class AbilityGUI(tb.LabelFrame):
 
     def __init__(self, left_window):
         super().__init__(left_window, text=" Abilities ",
+                         padding=(0, -3, 0, 0),
                          style="frame.TLabelframe", labelanchor="n")
         self.grid(column=0, row=2, sticky="ew", columnspan=2)
         self.ability_labels = []
@@ -39,7 +40,7 @@ class AbilityGUI(tb.LabelFrame):
             name = name.title()
 
             ability_label = tb.Label(self, text=name,
-                                     font=(FONT, FONT_SIZE, "bold"))
+                                     font=(FONT, FONT_SIZE))
             if hidden:
                 ability_label.configure(foreground=HIDDEN_COLOR)
 

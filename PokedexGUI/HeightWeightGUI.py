@@ -21,23 +21,25 @@ class HeightWeightGUI:
     def generate(self, left_window):
         self.height_frame = tb.LabelFrame(left_window, text=" Height ",
                                           style="frame.TLabelframe",
+                                          padding=(0, -3, 0, 0),
                                           labelanchor="n")
         self.weight_frame = tb.LabelFrame(left_window, text=" Weight ",
                                           style="frame.TLabelframe",
+                                          padding=(0, -3, 0, 0),
                                           labelanchor="n")
 
         self.height_frame.grid(column=0, row=3, sticky="news",
-                               padx=(0, 3), pady=FRAME_PAD)
+                               padx=(0, 2), pady=FRAME_PAD)
         self.height_frame.grid_columnconfigure(0, weight=1)
 
         self.weight_frame.grid(column=1, row=3, sticky="news",
-                               padx=(3, 0), pady=FRAME_PAD)
+                               padx=(2.5, 0), pady=FRAME_PAD)
         self.weight_frame.grid_columnconfigure(0, weight=1)
 
         self.height_label = tb.Label(self.height_frame,
-                                     font=(FONT, FONT_SIZE, "bold"))
+                                     font=(FONT, FONT_SIZE))
         self.weight_label = tb.Label(self.weight_frame,
-                                     font=(FONT, FONT_SIZE, "bold"))
+                                     font=(FONT, FONT_SIZE))
         self.height_label.grid(pady=(0, 5))
         self.weight_label.grid(pady=(0, 5))
 
