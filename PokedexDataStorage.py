@@ -34,6 +34,7 @@ class PokedexDataStorage:
     genera: str
     artwork: list
     type: list
+    capture_rate: int
     height: float
     weight: float
     abilities: list
@@ -52,6 +53,7 @@ class PokedexDataStorage:
             "genera": self.genera,
             "artwork": self.artwork,
             "type": self.type,
+            "capture_rate": self.capture_rate,
             "height": self.height,
             "weight": self.weight,
             "abilities": self.abilities,
