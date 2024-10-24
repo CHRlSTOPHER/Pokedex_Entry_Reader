@@ -31,6 +31,7 @@ class AbilityGUI(tb.LabelFrame):
             label.grid_forget()
 
         # create a new label for each ability
+        self.ability_labels = []
         for ability in abilities:
             name = ability.get("ability").get("name")
             hidden = ability.get("is_hidden")
@@ -51,7 +52,11 @@ class AbilityGUI(tb.LabelFrame):
         for label in self.ability_labels:
             amount = len(self.ability_labels)
             sticky = GRID_STICKY.get(amount)[i]
-            label.grid(column=i, row=0, pady=(0, 7), sticky=sticky)
+
+            if i > 0:
+                label.grid(column=i, row=0, padx=(2, 0), pady=(0, 7), sticky=sticky)
+            else:
+                label.grid(column=i, row=0, pady=(0, 7), sticky=sticky)
 
             # give weight to columns in use
             self.grid_columnconfigure(i, weight=1)
