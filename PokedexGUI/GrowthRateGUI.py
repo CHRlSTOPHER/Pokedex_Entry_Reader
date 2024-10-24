@@ -20,4 +20,5 @@ class GrowthRateGUI(tb.LabelFrame):
 
     def update_growth_rate(self, growth_rate):
         growth = growth_rate.get("name").title()
+        growth = growth.replace("-", " ")
         self.growth_label.config(text=growth)
