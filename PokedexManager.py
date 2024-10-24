@@ -25,6 +25,7 @@ GENDER = "gender_rate"
 
 POKEMON = "pokemon"
 SPECIES = "pokemon-species"
+STARTER = "bulbasaur"
 
 
 class PokedexManager(GuiFramework):
@@ -51,11 +52,13 @@ class PokedexManager(GuiFramework):
         self.gender_ratio = 0
         self.data_storage = None
 
-    def load_pokedex_data(self, entry):
-        if type(entry) != str:
-            entry_value = entry.widget.get()
-        else:
-            entry_value = entry
+        self.search_gui.insert(0, STARTER)
+        self.load_pokedex_data(0)
+
+        self.mainloop()
+
+    def load_pokedex_data(self, key_press):
+        entry_value = self.search_gui.get()
 
         # check if the entry already exists in our saved dex.
         dex_data = attempt_pokemon_data_load(entry_value)

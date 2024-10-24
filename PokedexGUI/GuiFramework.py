@@ -2,6 +2,7 @@ import tkinter as tk
 import ttkbootstrap as tb
 
 from PokedexGUI.ArtworkGUI import ArtworkGUI
+from PokedexGUI.EffortValueGUI import EffortValueGUI
 from PokedexGUI.TypeGUI import TypeGUI
 from PokedexGUI.AbilityGUI import AbilityGUI
 from PokedexGUI.HeightWeightGUI import HeightWeightGUI
@@ -9,13 +10,12 @@ from PokedexGUI.GrowthRateGUI import GrowthRateGUI
 from PokedexGUI.EggGroupGUI import EggGroupGUI
 
 WORDWRAP = 120
-WINDOW_SIZE = "1200x720"
+WINDOW_SIZE = "1280x720"
 TITLE = "Pokedex Entries"
 FONT = "Trebuchet MS"
 FONT_SIZE = 13
 
 DEBUG_WINDOW = "200x200+1452+216"
-STARTER = "stakataka"
 ONE_TYPE_X = (115, 10)
 TWO_TYPE_X = (65, 10)
 
@@ -37,6 +37,14 @@ class GuiFramework(tk.Tk):
         self.artwork = []
         self.frame_label_style = None
 
+        self.artwork_gui = None
+        self.type_gui = None
+        self.ability_gui = None
+        self.hweight_gui = None
+        self.growth_gui = None
+        self.egg_group_gui = None
+        self.search_gui = None
+
         self.art_label = None
         self.art_frame = None
         self.type_1_label = None
@@ -56,10 +64,6 @@ class GuiFramework(tk.Tk):
         self.middle_gui()
         self.right_gui()
 
-        self.load_pokedex_data(STARTER)
-
-        self.mainloop()
-
     def generate_styles(self):
         self.frame_label_style = tb.Style()
         self.frame_label_style.theme_use("cosmo")
@@ -69,7 +73,7 @@ class GuiFramework(tk.Tk):
                                          borderwidth=4, relief="solid")
 
     def left_gui(self):
-        self.left_window = tk.Frame(self, bg="black", padx=15, pady=5)
+        self.left_window = tk.Frame(self, padx=15, pady=5)
         self.left_window.grid(column=0, row=0)
 
         self.artwork_gui = ArtworkGUI(self.left_window)
@@ -78,12 +82,18 @@ class GuiFramework(tk.Tk):
         self.hweight_gui = HeightWeightGUI(self.left_window)
         self.growth_gui = GrowthRateGUI(self.left_window)
         self.egg_group_gui = EggGroupGUI(self.left_window)
+        self.effort_gui = EffortValueGUI(self.left_window)
 
     def middle_gui(self):
         pass
 
     def right_gui(self):
-        pass
+        self.right_window = tk.Frame(self, pady=5)
+        self.right_window.grid(column=2, row=0)
+
+        self.search_gui = tb.Entry(self.right_window)
+        self.search_gui.grid(sticky='nesw')
+        self.search_gui.bind("<Return>", self.load_pokedex_data)
 
     def update_gui(self, data):
         self.artwork_gui.load_artwork(self.artwork)
@@ -93,5 +103,4 @@ class GuiFramework(tk.Tk):
         self.hweight_gui.update_hweight(data.height, data.weight)
         self.growth_gui.update_growth_rate(data.growth_rate)
         self.egg_group_gui.update_egg_group(data.egg_group)
-
-        print(data.stats)
+        self.effort_gui.update_values(data.stats)
