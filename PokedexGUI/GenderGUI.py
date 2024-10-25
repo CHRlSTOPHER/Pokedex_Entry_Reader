@@ -44,7 +44,6 @@ class GenderGUI(tb.LabelFrame):
     def draw_gender_bars(self, ratio):
         female_ratio = ratio / 8.0 * 100
         male_ratio = 100 - female_ratio
-        print(ratio)
 
         ratio_list = []
         if male_ratio > 0:
@@ -70,7 +69,6 @@ class GenderGUI(tb.LabelFrame):
         x1, y1, x2, y2 = padding, 0, padding, 20
         text_x = TEXT_X_1
         for percent, color in ratio_list:
-            print(percent)
             # convert the percent to max width
             width = percent * (maximum_width / 100)
             x2 += width
