@@ -13,7 +13,7 @@ STAT_DICT = {
 }
 
 BLACK = "#373A3C"
-FADED = "#C0C1C2"
+FADED = "#B0B2B3"
 
 
 class EffortValueGUI(tb.LabelFrame):
@@ -31,8 +31,8 @@ class EffortValueGUI(tb.LabelFrame):
     def generate(self):
         i = 0
         for stat in STAT_NAMES:
-            label = tb.Label(self, text=stat, justify="center")
-            label.grid(row=0, column=i)
+            label = tb.Label(self, text=stat, justify="center", padding=(7, 0))
+            label.grid(row=0, column=i, pady=(0, 2))
             label.config(font=(FONT, FONT_SIZE))
 
             self.labels.append(label)
@@ -65,8 +65,4 @@ class EffortValueGUI(tb.LabelFrame):
                 text += '0'
 
             label.config(text=text, foreground=fg)
-
-
             i += 1
-
-        print(stats)

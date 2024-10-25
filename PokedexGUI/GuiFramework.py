@@ -3,6 +3,7 @@ import ttkbootstrap as tb
 
 from PokedexGUI.ArtworkGUI import ArtworkGUI
 from PokedexGUI.EffortValueGUI import EffortValueGUI
+from PokedexGUI.GenderGUI import GenderGUI
 from PokedexGUI.TypeGUI import TypeGUI
 from PokedexGUI.AbilityGUI import AbilityGUI
 from PokedexGUI.HeightWeightGUI import HeightWeightGUI
@@ -83,6 +84,7 @@ class GuiFramework(tk.Tk):
         self.growth_gui = GrowthRateGUI(self.left_window)
         self.egg_group_gui = EggGroupGUI(self.left_window)
         self.effort_gui = EffortValueGUI(self.left_window)
+        self.gender_gui = GenderGUI(self.left_window)
 
     def middle_gui(self):
         pass
@@ -104,3 +106,4 @@ class GuiFramework(tk.Tk):
         self.growth_gui.update_growth_rate(data.growth_rate)
         self.egg_group_gui.update_egg_group(data.egg_group)
         self.effort_gui.update_values(data.stats)
+        self.gender_gui.update_bar_ratio(data.gender_ratio)

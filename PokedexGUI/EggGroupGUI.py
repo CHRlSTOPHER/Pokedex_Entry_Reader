@@ -26,7 +26,7 @@ class EggGroupGUI(tb.LabelFrame):
 
     def generate(self):
         self.egg_label = tb.Label(self, font=(FONT, FONT_SIZE))
-        self.egg_label.pack(pady=(0, 6))
+        self.egg_label.pack(pady=(0, 5))
 
     def update_egg_group(self, egg_groups):
         group_str = ""
