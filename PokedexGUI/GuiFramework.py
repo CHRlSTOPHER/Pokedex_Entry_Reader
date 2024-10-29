@@ -4,6 +4,7 @@ import ttkbootstrap as tb
 from PokedexGUI.ArtworkGUI import ArtworkGUI
 from PokedexGUI.EffortValueGUI import EffortValueGUI
 from PokedexGUI.GenderGUI import GenderGUI
+from PokedexGUI.StatsGUI import StatsGUI
 from PokedexGUI.TypeGUI import TypeGUI
 from PokedexGUI.AbilityGUI import AbilityGUI
 from PokedexGUI.HeightWeightGUI import HeightWeightGUI
@@ -87,7 +88,10 @@ class GuiFramework(tk.Tk):
         self.gender_gui = GenderGUI(self.left_window)
 
     def middle_gui(self):
-        pass
+        self.middle_window = tk.Frame(self, padx=15, pady=5)
+        self.middle_window.grid(column=1, row=0)
+
+        self.stats_gui = StatsGUI(self.middle_window)
 
     def right_gui(self):
         self.right_window = tk.Frame(self, pady=5)
@@ -98,6 +102,7 @@ class GuiFramework(tk.Tk):
         self.search_gui.bind("<Return>", self.load_pokedex_data)
 
     def update_gui(self, data):
+        # left window
         self.artwork_gui.load_artwork(self.artwork)
         self.artwork_gui.load_artwork_description(data)
         self.type_gui.update_labels(data.type)
@@ -107,3 +112,6 @@ class GuiFramework(tk.Tk):
         self.egg_group_gui.update_egg_group(data.egg_group)
         self.effort_gui.update_values(data.stats)
         self.gender_gui.update_bar_ratio(data.gender_ratio)
+
+        # middle window
+        self.stats_gui.load_bar_graphs(data.stats)

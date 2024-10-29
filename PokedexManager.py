@@ -25,7 +25,7 @@ GENDER = "gender_rate"
 
 POKEMON = "pokemon"
 SPECIES = "pokemon-species"
-STARTER = "bulbasaur"
+STARTER = "blissey"
 
 
 class PokedexManager(GuiFramework):

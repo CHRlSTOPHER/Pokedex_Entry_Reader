@@ -33,7 +33,6 @@ class GenderGUI(tb.LabelFrame):
         self.gender_canvas = tb.Canvas(self, bg="white",
                                        height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
 
-
     def update_bar_ratio(self, ratio):
         # cleanup widgets
         self.gender_canvas.delete('all')
