@@ -1,5 +1,4 @@
 import ttkbootstrap as tb
-from tkinter import CENTER
 
 import io
 

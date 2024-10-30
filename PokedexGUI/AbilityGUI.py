@@ -54,7 +54,8 @@ class AbilityGUI(tb.LabelFrame):
             sticky = GRID_STICKY.get(amount)[i]
 
             if i > 0:
-                label.grid(column=i, row=0, padx=(2, 0), pady=(0, 7), sticky=sticky)
+                label.grid(column=i, row=0, padx=(2, 0), pady=(0, 7),
+                           sticky=sticky)
             else:
                 label.grid(column=i, row=0, pady=(0, 7), sticky=sticky)
 

@@ -19,7 +19,8 @@ FADED = "#B0B2B3"
 class EffortValueGUI(tb.LabelFrame):
 
     def __init__(self, left_window):
-        super().__init__(left_window, text=" Effort Values ", padding=(0, -5, 0, 0),
+        super().__init__(left_window, text=" Effort Values ",
+                         padding=(0, -5, 0, 0),
                          style="frame.TLabelframe", labelanchor="n")
         self.grid(row=5, column=0, columnspan=2, sticky="ew", pady=2)
 

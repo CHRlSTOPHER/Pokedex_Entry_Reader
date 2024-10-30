@@ -1,5 +1,4 @@
 import ttkbootstrap as tb
-from numpy.ma.core import minimum, maximum
 
 CANVAS_WIDTH = 150
 CANVAS_HEIGHT = 27
@@ -29,9 +28,11 @@ class GenderGUI(tb.LabelFrame):
 
     def generate(self):
         self.gender_label = tb.Label(self, text=" Gender Unknown ",
-                                     padding = (0, -3, 0, 0), font=(FONT, FONT_SIZE))
+                                     padding = (0, -3, 0, 0),
+                                     font=(FONT, FONT_SIZE))
         self.gender_canvas = tb.Canvas(self, bg="white",
-                                       height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
+                                       height=CANVAS_HEIGHT,
+                                       width=CANVAS_WIDTH)
 
     def update_bar_ratio(self, ratio):
         # cleanup widgets
@@ -53,7 +54,7 @@ class GenderGUI(tb.LabelFrame):
         # Gender is unknown. Return.
         if ratio == -1:
             self.gender_canvas.create_text(75, 10, text="Gender Unknown",
-                                           font=(FONT, FONT_SIZE), fill="black")
+                                           font=(FONT, FONT_SIZE))
             return
 
         minimum_width = 0
