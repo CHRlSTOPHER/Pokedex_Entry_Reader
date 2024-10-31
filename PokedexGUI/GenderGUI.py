@@ -1,5 +1,7 @@
 import ttkbootstrap as tb
 
+from PokedexGUI.GlobalGUI import BG_COLOR, FG_COLOR
+
 CANVAS_WIDTH = 150
 CANVAS_HEIGHT = 27
 
@@ -29,10 +31,11 @@ class GenderGUI(tb.LabelFrame):
     def generate(self):
         self.gender_label = tb.Label(self, text=" Gender Unknown ",
                                      padding = (0, -3, 0, 0),
-                                     font=(FONT, FONT_SIZE))
-        self.gender_canvas = tb.Canvas(self, bg="white",
-                                       height=CANVAS_HEIGHT,
+                                     font=(FONT, FONT_SIZE),
+                                     style="frame.TLabel")
+        self.gender_canvas = tb.Canvas(self, height=CANVAS_HEIGHT,
                                        width=CANVAS_WIDTH)
+        self.gender_canvas.configure(bg=BG_COLOR)
 
     def update_bar_ratio(self, ratio):
         # cleanup widgets
@@ -54,7 +57,8 @@ class GenderGUI(tb.LabelFrame):
         # Gender is unknown. Return.
         if ratio == -1:
             self.gender_canvas.create_text(75, 10, text="Gender Unknown",
-                                           font=(FONT, FONT_SIZE))
+                                           font=(FONT, FONT_SIZE),
+                                           fill=FG_COLOR)
             return
 
         minimum_width = 0
@@ -74,13 +78,13 @@ class GenderGUI(tb.LabelFrame):
             x2 += width
 
             self.gender_canvas.create_rectangle(
-                x1, y1, x2, y2, fill=color, outline="black", width=1
+                x1, y1, x2, y2, fill=color, outline="black", width=1,
             )
 
             self.gender_canvas.create_text(
                 text_x, 10,
                 text=f"{percent}%", font=(FONT, FONT_SIZE),
-                fill="black"
+                fill=FG_COLOR,
             )
             x1 = x2
             text_x = TEXT_X_2

@@ -1,6 +1,9 @@
 import tkinter as tk
 import ttkbootstrap as tb
+from mpmath import backlunds
+from tifffile import format_size
 
+from PokedexGUI.GlobalGUI import *
 from PokedexGUI.ArtworkGUI import ArtworkGUI
 from PokedexGUI.EffortValueGUI import EffortValueGUI
 from PokedexGUI.GenderGUI import GenderGUI
@@ -60,6 +63,7 @@ class GuiFramework(tk.Tk):
         # self.debug_menu()
         self.geometry(WINDOW_SIZE)
         self.title(TITLE)
+
         self.generate_styles()
 
         self.left_gui()
@@ -68,15 +72,35 @@ class GuiFramework(tk.Tk):
 
     def generate_styles(self):
         self.frame_label_style = tb.Style()
-        self.frame_label_style.theme_use("cosmo")
         self.frame_label_style.configure('frame.TLabelframe.Label',
                                          font=(FONT, FONT_SIZE, "bold"))
         self.frame_label_style.configure('frame.TLabelframe',
                                          borderwidth=4, relief="solid")
+        self.frame_label_style.configure('frame.TLabelframe',
+                                         background=BG_COLOR,
+                                         foreground=FG_COLOR)
+        self.frame_label_style.configure('frame.TLabelframe.Label',
+                                         background=BG_COLOR,
+                                         foreground=FG_COLOR)
+
+        self.label_style = tb.Style()
+        self.label_style.configure('frame.TLabel',
+                                   background=BG_COLOR, foreground=FG_COLOR)
+        self.label_style.configure('frame.TLabel.Label',
+                                   background=BG_COLOR)
+
+        self.frame_style = tb.Style()
+        self.frame_style.configure('frame.TFrame',
+                                   background=BG_COLOR, foreground=FG_COLOR)
+        self.frame_style.configure('frame.TFrame.Frame',
+                                   background=BG_COLOR, foreground=FG_COLOR)
+
+
+        self.config(background=BG_COLOR)
 
     def left_gui(self):
-        self.left_window = tk.Frame(self, padx=15, pady=5)
-        self.left_window.grid(column=0, row=0)
+        self.left_window = tb.Frame(self, style='frame.TFrame')
+        self.left_window.grid(column=0, row=0, padx=15, pady=5)
 
         self.artwork_gui = ArtworkGUI(self.left_window)
         self.type_gui = TypeGUI(self.left_window)
@@ -88,14 +112,14 @@ class GuiFramework(tk.Tk):
         self.gender_gui = GenderGUI(self.left_window)
 
     def middle_gui(self):
-        self.middle_window = tk.Frame(self, padx=15, pady=5)
-        self.middle_window.grid(column=1, row=0)
+        self.middle_window = tb.Frame(self, style='frame.TFrame')
+        self.middle_window.grid(column=1, row=0, padx=15, pady=5,)
 
         self.stats_gui = StatsGUI(self.middle_window)
 
     def right_gui(self):
-        self.right_window = tk.Frame(self, pady=5)
-        self.right_window.grid(column=2, row=0)
+        self.right_window = tb.Frame(self, style='frame.TFrame')
+        self.right_window.grid(column=2, row=0,  pady=5)
 
         self.search_gui = tb.Entry(self.right_window)
         self.search_gui.grid(sticky='nesw')

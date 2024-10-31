@@ -15,7 +15,8 @@ class GrowthRateGUI(tb.LabelFrame):
 
     def generate(self):
         self.growth_label = tb.Label(self, font=(FONT, FONT_SIZE),
-                                     padding=(0, -1, 0, -1))
+                                     padding=(0, -1, 0, -1),
+                                     style="frame.TLabel")
         self.growth_label.pack(pady=(1, 8))
 
     def update_growth_rate(self, growth_rate):

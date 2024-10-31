@@ -1,6 +1,7 @@
 import ttkbootstrap as tb
 from gradpyent.gradient import Gradient
-from sympy.physics.vector import gradient
+
+from PokedexGUI.GlobalGUI import BG_COLOR, FG_COLOR
 
 STAT_NAMES = {
     "hp": "HP",
@@ -11,13 +12,24 @@ STAT_NAMES = {
     "speed": "SPE",
 }
 STAT_COLOR = {
-    "HP": ["2dc84d", "2dc8ff"],
-    "ATK": ["f7ea48", "f7eaff"],
-    "DEF": ["ff7f41", "ff7fff"],
-    "SPA": ["e03c31", "e03cff"],
-    "SPD": ["753bbd", "753bff"],
-    "SPE": ["147bd1", "147bff"]
+    "HP": ["2dc84d", "2DAEF8"],
+    "ATK": ["f7ea48", "FFBF2A"],
+    "DEF": ["ff7f41", "FF4FFF"],
+    "SPA": ["e03c31", "FF0FFF"],
+    "SPD": ["753bbd", "4D0FFF"],
+    "SPE": ["147bd1", "00BFFF"]
 }
+
+GRADIENT_START = 0
+STAT_LIMITS = {
+    "HP": 255,  # blissey
+    "ATK": 190,  # mega mewtwo
+    "DEF": 230,  # shuckle
+    "SPA": 194,  # mega mewtwo
+    "SPD": 230,  # shuckle
+    "SPE": 180,  # deoxys
+}
+
 CANVAS_HEIGHT = 300
 CANVAS_WIDTH = 300
 
@@ -43,8 +55,9 @@ class StatsGUI(tb.LabelFrame):
         self.generate()
 
     def generate(self):
-        self.stat_canvas = tb.Canvas(self, bg="white",
-                                     height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
+        self.stat_canvas = tb.Canvas(self, height=CANVAS_HEIGHT,
+                                     width=CANVAS_WIDTH)
+        self.stat_canvas.configure(bg=BG_COLOR)
 
     def load_bar_graphs(self, stats):
         # clean up all previous graphs and remake it
@@ -84,7 +97,8 @@ class StatsGUI(tb.LabelFrame):
         x2 = x1 + increment
         start_color, end_color = STAT_COLOR.get(abbreviation)
         start_color, end_color = f"#{start_color}", f"#{end_color}"
-        gradient_list = self.get_gradient_list(start_color, end_color)
+        gradient_list = self.get_gradient_list(abbreviation,
+                                               start_color, end_color)
 
         # create gradient bars based on stat value
         for num in range(value):
@@ -98,16 +112,17 @@ class StatsGUI(tb.LabelFrame):
             x2 += increment
 
         self.stat_canvas.create_text(
-            TEXT_X, y1 + (BAR_THICKNESS / 2), text=text,
+            TEXT_X, y1 + (BAR_THICKNESS / 2), text=text, fill=FG_COLOR,
             font=(FONT, FONT_SIZE, "bold"), justify="left"
         )
 
-    def get_gradient_list(self, start_color="#FF0000",
-                          end_color="#0000FF"):
+    def get_gradient_list(self, stat,
+                          start_color="#FF0000", end_color="#0000FF"):
         # store a list of float values between 0 and 1
         input_list = []
-        for number in range(255):
-            input = number / 255
+        stat_range = STAT_LIMITS.get(stat) - GRADIENT_START
+        for number in range(stat_range):
+            input = number / stat_range
             input_list.append(input)
 
         # convert the float values to color values
@@ -118,4 +133,11 @@ class StatsGUI(tb.LabelFrame):
         )
         gradient_list = gradient.get_gradient_series(series=input_list,
                                                      fmt="html")
+        # only start gradient after a certain point
+        for num in range(len(gradient_list)):
+            if num < GRADIENT_START:
+                gradient_list.insert(0, start_color)
+            else:
+                break
+
         return gradient_list

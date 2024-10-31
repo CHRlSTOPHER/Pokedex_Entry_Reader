@@ -30,8 +30,9 @@ class ArtworkGUI(tb.LabelFrame):
         self.generate_label()
 
     def generate_label(self):
-        self.art_label = tb.Label(self, padding=(15, 5, 15, 15))
-        self.genera_label = tb.Label(self)
+        self.art_label = tb.Label(self, padding=(15, 5, 15, 15),
+                                  style="frame.TLabel")
+        self.genera_label = tb.Label(self, style="frame.TLabel")
 
         self.genera_label.grid(row=0)
         self.art_label.grid(row=1)

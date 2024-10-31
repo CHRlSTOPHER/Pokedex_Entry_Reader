@@ -36,10 +36,10 @@ class HeightWeightGUI:
                                padx=(2.5, 0), pady=FRAME_PAD)
         self.weight_frame.grid_columnconfigure(0, weight=1)
 
-        self.height_label = tb.Label(self.height_frame,
-                                     font=(FONT, FONT_SIZE))
-        self.weight_label = tb.Label(self.weight_frame,
-                                     font=(FONT, FONT_SIZE))
+        self.height_label = tb.Label(self.height_frame, font=(FONT, FONT_SIZE),
+                                     style="frame.TLabel")
+        self.weight_label = tb.Label(self.weight_frame, font=(FONT, FONT_SIZE),
+                                     style="frame.TLabel")
         self.height_label.grid(pady=(0, 5))
         self.weight_label.grid(pady=(0, 5))
 

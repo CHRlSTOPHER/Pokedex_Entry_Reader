@@ -40,8 +40,8 @@ class AbilityGUI(tb.LabelFrame):
             name = name.replace("-", " ")
             name = name.title()
 
-            ability_label = tb.Label(self, text=name,
-                                     font=(FONT, FONT_SIZE))
+            ability_label = tb.Label(self, text=name, font=(FONT, FONT_SIZE),
+                                     style="frame.TLabel")
             if hidden:
                 ability_label.configure(foreground=HIDDEN_COLOR)
 
