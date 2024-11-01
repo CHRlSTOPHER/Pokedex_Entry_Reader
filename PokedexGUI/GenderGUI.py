@@ -20,7 +20,8 @@ class GenderGUI(tb.LabelFrame):
     def __init__(self, left_window):
         super().__init__(left_window, text = " Gender Ratio ",
                          style="frame.TLabelframe", labelanchor="n")
-        self.grid(column=1, row=4, sticky='ew', columnspan=1, padx=(3, 0))
+        self.grid(column=1, row=4, sticky='ew', columnspan=1,
+                  padx=(3, 0), pady=1)
         self.columnconfigure(0, weight=1)
 
         self.gender_label = None

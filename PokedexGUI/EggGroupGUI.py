@@ -21,7 +21,8 @@ class EggGroupGUI(tb.LabelFrame):
         super().__init__(left_window, text=" Egg Group ",
                          padding=(0, -3, 0, -2),
                          style="frame.TLabelframe", labelanchor="n")
-        self.grid(column=0, row=4, sticky="ew", columnspan=1, padx=(0, 2))
+        self.grid(column=0, row=4, sticky="ew", columnspan=1,
+                  padx=(0, 2), pady=1)
         self.generate()
 
     def generate(self):

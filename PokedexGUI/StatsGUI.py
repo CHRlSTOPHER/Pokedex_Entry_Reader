@@ -30,15 +30,15 @@ STAT_LIMITS = {
     "SPE": 180,  # deoxys
 }
 
-CANVAS_HEIGHT = 300
-CANVAS_WIDTH = 300
+CANVAS_HEIGHT = 338
+CANVAS_WIDTH = 310
 
-TEXT_X = 36
-X_BAR_BEGIN_POS = 75
+TEXT_X = 40
+X_BAR_BEGIN_POS = 80
 MAX_BAR_SIZE = .84
 BAR_THICKNESS = 25.0
-SPACING = 20
-EXTRA_SPACE = 25
+SPACING = 22
+EXTRA_SPACE = 30
 
 FONT = "Trebuchet MS"
 FONT_SIZE = 11
@@ -48,10 +48,11 @@ class StatsGUI(tb.LabelFrame):
 
     def __init__(self, middle_window):
         super().__init__(middle_window, text=" Stats ",
+                         padding=(0, 0, 0, 0),
                          style="frame.TLabelframe", labelanchor="n")
         self.stat_canvas = None
 
-        self.grid(row=0)
+        self.grid(column=0, row=0, rowspan=1, pady=(0, 2))
         self.generate()
 
     def generate(self):

@@ -3,6 +3,7 @@ import ttkbootstrap as tb
 from mpmath import backlunds
 from tifffile import format_size
 
+from PokedexGUI.MoveSetGUI import MoveSetGUI
 from PokedexGUI.GlobalGUI import *
 from PokedexGUI.ArtworkGUI import ArtworkGUI
 from PokedexGUI.EffortValueGUI import EffortValueGUI
@@ -100,7 +101,7 @@ class GuiFramework(tk.Tk):
 
     def left_gui(self):
         self.left_window = tb.Frame(self, style='frame.TFrame')
-        self.left_window.grid(column=0, row=0, padx=15, pady=5)
+        self.left_window.grid(column=0, row=0, padx=(10, 0), pady=(5, 15))
 
         self.artwork_gui = ArtworkGUI(self.left_window)
         self.type_gui = TypeGUI(self.left_window)
@@ -113,9 +114,10 @@ class GuiFramework(tk.Tk):
 
     def middle_gui(self):
         self.middle_window = tb.Frame(self, style='frame.TFrame')
-        self.middle_window.grid(column=1, row=0, padx=15, pady=5,)
+        self.middle_window.grid(column=1, row=0, padx=15, pady=(0, 2))
 
         self.stats_gui = StatsGUI(self.middle_window)
+        self.move_set_gui = MoveSetGUI(self.middle_window)
 
     def right_gui(self):
         self.right_window = tb.Frame(self, style='frame.TFrame')

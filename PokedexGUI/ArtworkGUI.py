@@ -23,7 +23,7 @@ class ArtworkGUI(tb.LabelFrame):
     def __init__(self, left_window):
         super().__init__(left_window, text="ZAMN", padding=(0, -9, 0, 0),
                          style="frame.TLabelframe", labelanchor="n")
-        self.grid(column=0, row=0, pady=(3, 0), columnspan=2)
+        self.grid(column=0, row=0, pady=(3, 1), columnspan=2)
 
         self.left_window = left_window
         self.art_label = None
