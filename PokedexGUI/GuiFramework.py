@@ -141,3 +141,4 @@ class GuiFramework(tk.Tk):
 
         # middle window
         self.stats_gui.load_bar_graphs(data.stats)
+        self.move_set_gui.load_move_set(data.moves)
