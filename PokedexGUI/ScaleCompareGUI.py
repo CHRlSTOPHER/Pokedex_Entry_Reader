@@ -1,9 +1,9 @@
 import ttkbootstrap as tb
-from PIL import ImageTk, Image
+from PIL import ImageTk, Image, ImageOps
 import urllib.request
 import io
 
-from PokedexGUI.GlobalGUI import BG_COLOR
+from PokedexGUI.GlobalGUI import BG_COLOR, DARK_MODE
 
 TRAINER_IMG_PATH = "resources/icons/trainer-icon.png"
 
@@ -41,6 +41,10 @@ class ScaleCompareGUI(tb.LabelFrame):
         self.reset_canvas()
         human_image = Image.open(TRAINER_IMG_PATH)
         pokemon_image = self.load_pokemon_image(artwork)
+        # make image completely black and invert colors if theme is dark mode
+        human_image = self.silhouette_image(human_image)
+        pokemon_image = self.silhouette_image(pokemon_image)
+
         human_image, pokemon_image = self.resize_images(human_image,
                                                         pokemon_image)
         self.render_images(human_image, pokemon_image)
@@ -57,19 +61,9 @@ class ScaleCompareGUI(tb.LabelFrame):
         raw_data = urllib.request.urlopen(reg_art).read()
         image = Image.open(io.BytesIO(raw_data))
 
-        # Extract the alpha channel and threshold it at 200
-        alpha = image.getchannel('A')
-        alpha_thresh = alpha.point(lambda p: 255 if p > 200 else 0)
-
-        # Make a new completely black image same size as original
-        silhouette = Image.new('RGB', image.size)
-
-        # Copy across the alpha channel from original
-        silhouette.putalpha(alpha_thresh)
-
         # remove any excess empty space from the sides of the image
         bounding_box = image.getbbox()
-        pokemon_image = silhouette.crop(bounding_box)
+        pokemon_image = image.crop(bounding_box)
 
         return pokemon_image
 
@@ -106,9 +100,11 @@ class ScaleCompareGUI(tb.LabelFrame):
 
         # Lastly, apply the new scale values to the images themselves
         human_image = human_image.resize((int(human_image_width),
-                                          int(human_image_height)))
+                                          int(human_image_height)),
+                                          Image.Resampling.LANCZOS)
         pokemon_image = pokemon_image.resize((int(pokemon_image_width),
-                                              int(pokemon_image_height)))
+                                              int(pokemon_image_height)),
+                                              Image.Resampling.LANCZOS)
 
         return human_image, pokemon_image
 
@@ -120,3 +116,19 @@ class ScaleCompareGUI(tb.LabelFrame):
         pokemon_photo = ImageTk.PhotoImage(pokemon_image)
         self.pokemon_canvas.configure(image=pokemon_photo)
         self.pokemon_canvas.image = pokemon_photo
+
+    def silhouette_image(self, image):
+        # get alpha data from image
+        alpha = image.getchannel('A')
+        # define the threshold
+        alpha_thresh = alpha.point(lambda p: 200 if p > 200 else 0)
+
+        # we cannot invert in rgba mode, so we make a new image in rgb mode
+        image = Image.new('RGB', image.size)
+        if DARK_MODE:
+            image = ImageOps.invert(image)
+
+        # re-apply the alpha channel to the rgb image
+        image.putalpha(alpha_thresh)
+
+        return image
