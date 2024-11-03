@@ -19,7 +19,7 @@ class ScaleCompareGUI(tb.LabelFrame):
 
     def __init__(self, window):
         super().__init__(window, text="  Scale Comparison  ",
-                         width=400, height=300,
+                         width=350, height=250,
                          style='frame.TLabelframe', labelanchor='n')
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -61,10 +61,18 @@ class ScaleCompareGUI(tb.LabelFrame):
         self.pokemon_canvas.grid(row=0, column=0, sticky='se', padx=(10, 10))
         self.human_canvas.grid(row=0, column=1, sticky='ws', padx=(10, 10))
 
-        self.load_pokemon_photo(p_width, p_height)
-        self.load_human_photo(h_width, h_height)
+        x_scale, y_scale = self.load_pokemon_photo(p_width, p_height)
+        self.load_human_photo(h_width, h_height, x_scale, y_scale)
 
-    def load_human_photo(self, width, height):
+    def load_human_photo(self, width, height, x_scale, y_scale):
+        # match the scale of the trainer with the pokemon's scale modifiers
+        if x_scale != 1.0:
+            width *= x_scale
+            height *= x_scale
+        elif y_scale != 1.0:
+            width *= y_scale
+            height *= y_scale
+
         # load canvas images
         image = Image.open(TRAINER_IMG_PATH)
         image = image.resize((int(width/2), int(height)))
@@ -107,3 +115,5 @@ class ScaleCompareGUI(tb.LabelFrame):
 
         self.pokemon_canvas.configure(image=photo)
         self.pokemon_canvas.image = photo
+
+        return x_scale, y_scale
