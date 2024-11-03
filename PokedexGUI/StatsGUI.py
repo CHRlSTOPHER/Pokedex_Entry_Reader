@@ -47,7 +47,7 @@ FONT_SIZE = 11
 class StatsGUI(tb.LabelFrame):
 
     def __init__(self, middle_window):
-        super().__init__(middle_window, text=" Stats ",
+        super().__init__(middle_window, text="  Stats  ",
                          padding=(0, 0, 0, 0),
                          style="frame.TLabelframe", labelanchor="n")
         self.stat_canvas = None

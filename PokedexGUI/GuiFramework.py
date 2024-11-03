@@ -8,6 +8,7 @@ from PokedexGUI.GlobalGUI import *
 from PokedexGUI.ArtworkGUI import ArtworkGUI
 from PokedexGUI.EffortValueGUI import EffortValueGUI
 from PokedexGUI.GenderGUI import GenderGUI
+from PokedexGUI.ScaleCompareGUI import ScaleCompareGUI
 from PokedexGUI.StatsGUI import StatsGUI
 from PokedexGUI.TypeGUI import TypeGUI
 from PokedexGUI.AbilityGUI import AbilityGUI
@@ -70,6 +71,7 @@ class GuiFramework(tk.Tk):
         self.left_gui()
         self.middle_gui()
         self.right_gui()
+        self.far_right_gui()
 
     def generate_styles(self):
         self.frame_label_style = tb.Style()
@@ -123,7 +125,13 @@ class GuiFramework(tk.Tk):
         self.right_window = tb.Frame(self, style='frame.TFrame')
         self.right_window.grid(column=2, row=0,  pady=5)
 
-        self.search_gui = tb.Entry(self.right_window)
+        self.scale_gui = ScaleCompareGUI(self.right_window)
+
+    def far_right_gui(self):
+        self.far_right_window = tb.Frame(self, style='frame.Tframe')
+        self.far_right_window.grid(column=3, row=0, padx=7, pady=5)
+
+        self.search_gui = tb.Entry(self.far_right_window)
         self.search_gui.grid(sticky='nesw')
         self.search_gui.bind("<Return>", self.load_pokedex_data)
 
@@ -142,3 +150,6 @@ class GuiFramework(tk.Tk):
         # middle window
         self.stats_gui.load_bar_graphs(data.stats)
         self.move_set_gui.load_move_set(data.moves)
+
+        # right window
+        self.scale_gui.load_scale_compare(data.height, self.artwork)

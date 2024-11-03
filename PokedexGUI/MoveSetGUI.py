@@ -5,14 +5,14 @@ import math
 from PokedexGUI.GlobalGUI import BG_COLOR
 
 FRAME_HEIGHT = 500
-FRAME_WIDTH = 315
+FRAME_WIDTH = 310
 HEIGHT = 270
 WIDTH = 292
 ROW_HEIGHT = 13.6
 SCROLL_AMOUNT = -30
 
 FONT = "Trebuchet MS"
-FONT_SIZE = 13
+FONT_SIZE = 12
 
 VGD = 'version_group_details'
 LLA = 'level_learned_at'
@@ -28,7 +28,7 @@ LEARN_METHOD = {
 class MoveSetGUI(tb.LabelFrame):
 
     def __init__(self, window):
-        super().__init__(window, text=" Move Set ",
+        super().__init__(window, text="  Move Set  ",
                          style='frame.TLabelframe', labelanchor='n')
 
         self.grid(column=0, row=1, pady=(0, 4))
@@ -38,7 +38,7 @@ class MoveSetGUI(tb.LabelFrame):
 
     def generate(self):
         self.canvas = tb.Canvas(self)
-        self.canvas.configure(width=300, height=302)
+        self.canvas.configure(width=296, height=302)
         self.canvas.grid()
         self.canvas.configure(background=BG_COLOR)
 
@@ -72,8 +72,9 @@ class MoveSetGUI(tb.LabelFrame):
             label.grid(row=math.floor(row), column=column)
             label.bind("<MouseWheel>", self.scroll_event)
 
-            # column * x + x result in two possible column coords
-            x_position = (column * 130) + 90
+            # column * x is the two possible column coordinates
+            # + x is the base increase to the right for both
+            x_position = (column * 135) + 80
 
             # row * y is the distance between each text and
             # + y is that little extra spacing at the start of the list
