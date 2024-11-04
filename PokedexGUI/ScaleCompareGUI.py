@@ -7,7 +7,7 @@ from PokedexGUI.GlobalGUI import BG_COLOR, DARK_MODE
 
 TRAINER_IMG_PATH = "resources/icons/trainer-icon.png"
 
-SCALE = 200
+SCALE = 180
 
 AVERAGE_HUMAN_SIZE = 1.7
 
@@ -15,7 +15,7 @@ class ScaleCompareGUI(tb.LabelFrame):
 
     def __init__(self, window):
         super().__init__(window, text="  Scale Comparison  ",
-                         width=350, height=250,
+                         width=350, height=230,
                          style='frame.TLabelframe', labelanchor='n')
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -98,12 +98,21 @@ class ScaleCompareGUI(tb.LabelFrame):
         pokemon_image_width *= (pokemon_scale * scale_down)
         pokemon_image_height *= (pokemon_scale * scale_down)
 
+        sizes = [human_image_width, human_image_height,
+                 pokemon_image_width, pokemon_image_height]
+        i = 0
+        # sometimes images are smaller than they should be. do one extra check.
+        if max(sizes) < SCALE:
+            # divide scale by the biggest number, ex: 180/90 would = 2x
+            multiplier = SCALE / max(sizes)
+            for size in sizes:
+                sizes[i] = size * multiplier
+                i += 1
+
         # Lastly, apply the new scale values to the images themselves
-        human_image = human_image.resize((int(human_image_width),
-                                          int(human_image_height)),
+        human_image = human_image.resize((int(sizes[0]), int(sizes[1])),
                                           Image.Resampling.LANCZOS)
-        pokemon_image = pokemon_image.resize((int(pokemon_image_width),
-                                              int(pokemon_image_height)),
+        pokemon_image = pokemon_image.resize((int(sizes[2]), int(sizes[3])),
                                               Image.Resampling.LANCZOS)
 
         return human_image, pokemon_image
