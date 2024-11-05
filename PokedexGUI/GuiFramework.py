@@ -1,14 +1,14 @@
 import tkinter as tk
 import ttkbootstrap as tb
-from mpmath import backlunds
-from tifffile import format_size
 
+from PokedexGUI.FlavourTextGUI import FlavourTextGUI
 from PokedexGUI.MoveSetGUI import MoveSetGUI
 from PokedexGUI.GlobalGUI import *
 from PokedexGUI.ArtworkGUI import ArtworkGUI
 from PokedexGUI.EffortValueGUI import EffortValueGUI
 from PokedexGUI.GenderGUI import GenderGUI
 from PokedexGUI.ScaleCompareGUI import ScaleCompareGUI
+from PokedexGUI.SpriteGUI import SpriteGUI
 from PokedexGUI.StatsGUI import StatsGUI
 from PokedexGUI.TypeGUI import TypeGUI
 from PokedexGUI.AbilityGUI import AbilityGUI
@@ -32,9 +32,6 @@ class GuiFramework(tk.Tk):
     def __init__(self):
         super().__init__()
 
-        self.left_window = None
-        self.middle_window = None
-        self.right_window = None
         self.pkmn_data = None
         self.species_data = None
         self.entry_value = None
@@ -43,7 +40,6 @@ class GuiFramework(tk.Tk):
         self.condensed_dex_entries = []
         self.artwork = []
         self.frame_label_style = None
-
         self.artwork_gui = None
         self.type_gui = None
         self.ability_gui = None
@@ -51,12 +47,22 @@ class GuiFramework(tk.Tk):
         self.growth_gui = None
         self.egg_group_gui = None
         self.search_gui = None
-
         self.art_label = None
         self.art_frame = None
         self.type_1_label = None
         self.type_2_label = None
-
+        self.shiny = False
+        self.sprite_gui = None
+        self.scale_gui = None
+        self.move_set_gui = None
+        self.stats_gui = None
+        self.gender_gui = None
+        self.effort_gui = None
+        self.frame_style = None
+        self.label_style = None
+        self.left_window = None
+        self.middle_window = None
+        self.right_window = None
         self.debug_window = None
 
         self.generate()
@@ -71,7 +77,6 @@ class GuiFramework(tk.Tk):
         self.left_gui()
         self.middle_gui()
         self.right_gui()
-        self.far_right_gui()
 
     def generate_styles(self):
         self.frame_label_style = tb.Style()
@@ -97,7 +102,6 @@ class GuiFramework(tk.Tk):
                                    background=BG_COLOR, foreground=FG_COLOR)
         self.frame_style.configure('frame.TFrame.Frame',
                                    background=BG_COLOR, foreground=FG_COLOR)
-
 
         self.config(background=BG_COLOR)
 
@@ -126,16 +130,18 @@ class GuiFramework(tk.Tk):
         self.right_window.grid(column=2, row=0,  pady=5)
 
         self.scale_gui = ScaleCompareGUI(self.right_window)
+        self.sprite_gui = SpriteGUI(self.right_window)
+        self.flavour_text_gui = FlavourTextGUI(self.right_window)
 
-    def far_right_gui(self):
-        self.far_right_window = tb.Frame(self, style='frame.Tframe')
-        self.far_right_window.grid(column=3, row=0, padx=7, pady=5)
-
-        self.search_gui = tb.Entry(self.far_right_window)
-        self.search_gui.grid(sticky='nesw')
+        self.search_label = tb.Label(self.right_window, text="Search:",
+                                     background=BG_COLOR, foreground=FG_COLOR,
+                                     font=(FONT, FONT_SIZE))
+        self.search_label.grid(row=0, column=1, padx=(24, 12))
+        self.search_gui = tb.Entry(self.right_window)
+        self.search_gui.grid(sticky='', row=0, column=2)
         self.search_gui.bind("<Return>", self.load_pokedex_data)
 
-    def update_gui(self, data):
+    def update_gui(self, data, generation):
         # left window
         self.artwork_gui.load_artwork(self.artwork)
         self.artwork_gui.load_artwork_description(data)
@@ -148,8 +154,12 @@ class GuiFramework(tk.Tk):
         self.gender_gui.update_bar_ratio(data.gender_ratio)
 
         # middle window
-        self.stats_gui.load_bar_graphs(data.stats)
-        self.move_set_gui.load_move_set(data.moves)
+        self.stats_gui.update_bar_graphs(data.stats)
+        self.move_set_gui.update_move_set(data.moves)
 
         # right window
-        self.scale_gui.load_scale_compare(data.height, self.artwork)
+        self.scale_gui.update_scale_compare(data.height, self.artwork)
+        self.sprite_gui.update_sprites(generation, data.dex_num, self.shiny)
+
+        # far right window
+        '''e'''

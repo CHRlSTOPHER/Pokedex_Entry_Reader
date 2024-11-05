@@ -15,7 +15,7 @@ class ScaleCompareGUI(tb.LabelFrame):
 
     def __init__(self, window):
         super().__init__(window, text="  Scale Comparison  ",
-                         width=350, height=230,
+                         width=330, height=220,
                          style='frame.TLabelframe', labelanchor='n')
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -36,7 +36,7 @@ class ScaleCompareGUI(tb.LabelFrame):
         self.human_canvas = tb.Label(self)
         self.human_canvas.configure(background=BG_COLOR)
 
-    def load_scale_compare(self, pokemon_height, artwork):
+    def update_scale_compare(self, pokemon_height, artwork):
         self.pokemon_height = pokemon_height
         self.reset_canvas()
         human_image = Image.open(TRAINER_IMG_PATH)

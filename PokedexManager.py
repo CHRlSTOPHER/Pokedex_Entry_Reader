@@ -33,6 +33,7 @@ class PokedexManager(GuiFramework):
     def __init__(self):
         # Dex Data
         GuiFramework.__init__(self)
+        self.generation = None
         self.pkmn_data = None
         self.species_data = None
         self.name = None
@@ -90,8 +91,9 @@ class PokedexManager(GuiFramework):
             self.growth_rate, self.egg_group, self.gender_ratio
         )
         self.data_storage.save_json_data()
+        self.generation = self.data_storage.get_generation()
 
-        self.update_gui(self.data_storage)
+        self.update_gui(self.data_storage, self.generation)
 
     def verify_data(self, data_list):
         data_bool = False

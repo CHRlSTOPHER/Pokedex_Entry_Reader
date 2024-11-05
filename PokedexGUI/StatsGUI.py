@@ -60,7 +60,7 @@ class StatsGUI(tb.LabelFrame):
                                      width=CANVAS_WIDTH)
         self.stat_canvas.configure(bg=BG_COLOR)
 
-    def load_bar_graphs(self, stats):
+    def update_bar_graphs(self, stats):
         # clean up all previous graphs and remake it
         self.stat_canvas.delete("all")
         self.stat_canvas.grid()

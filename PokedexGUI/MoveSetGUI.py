@@ -56,7 +56,7 @@ class MoveSetGUI(tb.LabelFrame):
         scroll = event.delta / SCROLL_AMOUNT
         self.canvas.yview_scroll(int(scroll), "units")
 
-    def load_move_set(self, moves):
+    def update_move_set(self, moves):
         # reset move set frame
         self.canvas.delete('all')
 
