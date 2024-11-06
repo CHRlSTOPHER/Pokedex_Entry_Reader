@@ -32,10 +32,16 @@ class EggGroupGUI(tb.LabelFrame):
 
     def update_egg_group(self, egg_groups):
         group_str = ""
+        names = []
         for egg_group in egg_groups:
             name = egg_group.get("name")
+            names.append(name)
             if ALT_EGG_GROUPS.get(name):
                 name = ALT_EGG_GROUPS.get(name)
             group_str += f" {name.title()} "
 
-        self.egg_label.config(text=group_str)
+        if "indeterminate" in names and "humanshape" in names:
+            # the text is too long. have to shrink this combo down.
+            self.egg_label.config(text=group_str, font=(FONT, 10))
+        else:
+            self.egg_label.config(text=group_str, font=(FONT, FONT_SIZE))
