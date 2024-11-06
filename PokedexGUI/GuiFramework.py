@@ -17,7 +17,7 @@ from PokedexGUI.GrowthRateGUI import GrowthRateGUI
 from PokedexGUI.EggGroupGUI import EggGroupGUI
 
 WORDWRAP = 120
-WINDOW_SIZE = "1280x720"
+WINDOW_SIZE = "1660x720"
 TITLE = "Pokedex Entries"
 FONT = "Trebuchet MS"
 FONT_SIZE = 13
@@ -71,6 +71,7 @@ class GuiFramework(tk.Tk):
         # self.debug_menu()
         self.geometry(WINDOW_SIZE)
         self.title(TITLE)
+        self.resizable(width=False, height=False)
 
         self.generate_styles()
 
@@ -135,10 +136,10 @@ class GuiFramework(tk.Tk):
 
         self.search_label = tb.Label(self.right_window, text="Search:",
                                      background=BG_COLOR, foreground=FG_COLOR,
-                                     font=(FONT, FONT_SIZE))
-        self.search_label.grid(row=0, column=1, padx=(24, 12))
-        self.search_gui = tb.Entry(self.right_window)
-        self.search_gui.grid(sticky='', row=0, column=2)
+                                     font=(FONT, 11, "bold"))
+        self.search_label.grid(row=2, column=1, padx=(0, 10), sticky='ne')
+        self.search_gui = tb.Entry(self.right_window, width=12)
+        self.search_gui.grid(sticky='nw', row=2, column=2)
         self.search_gui.bind("<Return>", self.load_pokedex_data)
 
     def update_gui(self, data, generation):

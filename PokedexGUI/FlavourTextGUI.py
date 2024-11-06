@@ -5,9 +5,10 @@ class FlavourTextGUI(tb.LabelFrame):
 
     def __init__(self, window):
         super().__init__(window, text="  Flavour Text  ",
-                         width=560, height=280,
+                         width=562, height=370,
                          style='frame.TLabelframe', labelanchor='n')
-        self.grid(row=2, column=0, pady=(0, 6), columnspan=3)
+        self.grid(row=1, column=0, pady=(0, 10), columnspan=1, rowspan=2,
+                  sticky='n')
         self.grid_propagate(False)
 
         self.generate()

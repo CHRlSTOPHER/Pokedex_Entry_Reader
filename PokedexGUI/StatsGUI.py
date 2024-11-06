@@ -20,6 +20,7 @@ STAT_COLOR = {
     "SPE": ["147bd1", "00BFFF"]
 }
 
+LINE_WIDTH = 2
 GRADIENT_START = 0
 STAT_LIMITS = {
     "HP": 255,  # blissey
@@ -89,7 +90,7 @@ class StatsGUI(tb.LabelFrame):
 
         text = f"{abbreviation}: {value}"
         # background rectangle that provides the outline for the gradient bars
-        self.stat_canvas.create_rectangle(x1, y1, x2, y2, width=2)
+        self.stat_canvas.create_rectangle(x1, y1, x2, y2, width=LINE_WIDTH)
 
         # change x2 from max length to just fraction of the full bar
         # we plan on making many small rectangles to create the illusion

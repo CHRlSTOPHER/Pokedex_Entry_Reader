@@ -7,7 +7,8 @@ from PokedexGUI.GlobalGUI import BG_COLOR, DARK_MODE
 
 TRAINER_IMG_PATH = "resources/icons/trainer-icon.png"
 
-SCALE = 180
+SCALE = 220
+GRAY = 190
 
 AVERAGE_HUMAN_SIZE = 1.7
 
@@ -15,14 +16,14 @@ class ScaleCompareGUI(tb.LabelFrame):
 
     def __init__(self, window):
         super().__init__(window, text="  Scale Comparison  ",
-                         width=330, height=220,
+                         width=380, height=300,
                          style='frame.TLabelframe', labelanchor='n')
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
 
-        self.grid(column=0, row=0)
+        self.grid(column=1, row=1, columnspan=2, padx=(8, 0), sticky='n')
         self.grid_propagate(False)  # freeze the frame size
         self.artwork = None
         self.pokemon_height = 0
@@ -130,7 +131,7 @@ class ScaleCompareGUI(tb.LabelFrame):
         # get alpha data from image
         alpha = image.getchannel('A')
         # define the threshold
-        alpha_thresh = alpha.point(lambda p: 200 if p > 200 else 0)
+        alpha_thresh = alpha.point(lambda p: GRAY if p > 200 else 0)
 
         # we cannot invert in rgba mode, so we make a new image in rgb mode
         image = Image.new('RGB', image.size)
