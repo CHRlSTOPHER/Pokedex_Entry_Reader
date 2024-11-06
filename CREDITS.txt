@@ -1,3 +1,4 @@
 PokeAPI: pokemon data
 sjaredfern: Google Drive pokemon sprites
+Bulbapedia/Bulbagarden: Transparent Gen 1 and 2 Sprites
 coolors.co: color palettes for stat colors
