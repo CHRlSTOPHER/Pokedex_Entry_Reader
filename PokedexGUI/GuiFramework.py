@@ -161,6 +161,4 @@ class GuiFramework(tk.Tk):
         # right window
         self.scale_gui.update_scale_compare(data.height, self.artwork)
         self.sprite_gui.update_sprites(generation, data.dex_num, self.shiny)
-
-        # far right window
-        '''e'''
+        self.flavour_text_gui.load_descriptions(data.flavour_text)

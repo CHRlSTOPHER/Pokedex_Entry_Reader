@@ -33,7 +33,6 @@ SPRITES = {
 
 	# Crystal Sprites Page 2
 	9: "https://archives.bulbagarden.net/w/index.php?title=Category:Crystal_sprites&filefrom=%2A200%0ASpr+2c+200.png#mw-category-media"
-
 }
 
 # modify this number to sprite version

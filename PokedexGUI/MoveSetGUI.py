@@ -69,7 +69,6 @@ class MoveSetGUI(tb.LabelFrame):
 
             label = tb.Label(self.canvas, text=move_name,
                              style='frame.TLabel', font=(FONT, FONT_SIZE))
-            label.grid(row=math.floor(row), column=column)
             label.bind("<MouseWheel>", self.scroll_event)
 
             # column * x is the two possible column coordinates
