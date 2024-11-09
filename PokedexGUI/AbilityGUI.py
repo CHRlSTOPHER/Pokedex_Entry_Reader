@@ -18,7 +18,17 @@ class AbilityGUI(tb.LabelFrame):
                          padding=(0, -3, 0, 0),
                          style="frame.TLabelframe", labelanchor="n")
         self.grid(column=0, row=2, sticky="ew", columnspan=2, pady=1)
+        self.all_labels = []
         self.ability_labels = []
+
+        self.generate()
+
+    def generate(self):
+        # There will always be at least one ability.
+        label_1 = tb.Label(self)
+        label_2 = tb.Label(self)
+        label_3 = tb.Label(self)
+        self.all_labels = [label_1, label_2, label_3]
 
     def load_labels(self, abilities):
         # reset column weight
@@ -26,11 +36,13 @@ class AbilityGUI(tb.LabelFrame):
         self.grid_columnconfigure(1, weight=0)
         self.grid_columnconfigure(2, weight=0)
 
-        # clean up prior ability labels
+        # reset ability labels
         for label in self.ability_labels:
             label.grid_forget()
+            label.configure(foreground="white")
 
         # create a new label for each ability
+        i = 0
         self.ability_labels = []
         for ability in abilities:
             name = ability.get("ability").get("name")
@@ -40,12 +52,14 @@ class AbilityGUI(tb.LabelFrame):
             name = name.replace("-", " ")
             name = name.title()
 
-            ability_label = tb.Label(self, text=name, font=(FONT, FONT_SIZE),
-                                     style="frame.TLabel")
+            ability_label = self.all_labels[i]
+            ability_label.configure(text=name, font=(FONT, FONT_SIZE),
+                                    style="frame.TLabel")
             if hidden:
                 ability_label.configure(foreground=HIDDEN_COLOR)
 
             self.ability_labels.append(ability_label)
+            i += 1
 
         # handle the grid function based on how many abilities are present
         i = 0

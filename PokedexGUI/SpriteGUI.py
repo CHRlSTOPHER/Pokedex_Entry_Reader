@@ -31,8 +31,9 @@ class SpriteGUI(tb.LabelFrame):
         self.generate()
 
     def generate(self):
-        self.default_label = tb.Label(self)
-        self.default_label.grid()
+        for x in range(12):
+            sprite_label = tb.Label(self, style='frame.TLabel')
+            self.sprite_labels.append(sprite_label)
 
     def update_sprites(self, generation, dex_num, shiny):
         self.generation = generation
@@ -72,7 +73,8 @@ class SpriteGUI(tb.LabelFrame):
 
     def load_sprites(self, sprite_paths):
         self.reset_widgets(sprite_paths)
-        self.cleanup_labels()
+        for label in self.sprite_labels:
+            label.grid_forget()
 
         sprites = 1
         row = 0
@@ -94,10 +96,9 @@ class SpriteGUI(tb.LabelFrame):
 
             # create a label for the sprite. makes positioning more automated.
             # a canvas would be more of a hassle to organize.
-            sprite_label = tb.Label(self, style='frame.TLabel')
+            sprite_label = self.sprite_labels[sprites - 1]
             sprite_label.configure(image=sprite_photo)
             sprite_label.image = sprite_photo
-            self.sprite_labels.append(sprite_label)
 
             # adjust the row and column weight of the sprite labelframe
             # to fit the needs of the current sprite amount.
@@ -157,9 +158,3 @@ class SpriteGUI(tb.LabelFrame):
             columns = len(sprite_paths)
             [self.columnconfigure(i, weight=1) for i in range(columns)]
             self.rowconfigure(0, weight=1)
-
-    def cleanup_labels(self):
-        # clear all previous sprites
-        for label in self.sprite_labels:
-            label.destroy()
-        self.sprite_labels = []

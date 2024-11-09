@@ -10,7 +10,7 @@ PAGE_NUM_SIZE = 20
 class FlavourTextGUI(tb.LabelFrame):
 
     def __init__(self, window):
-        super().__init__(window, text="  Pokedex Descriptions  ",
+        super().__init__(window, text="  Pokedex Description  ",
                          width=562, height=370, padding=(0, -5, 0, 0),
                          style='frame.TLabelframe', labelanchor='n')
         self.grid(row=1, column=0, pady=(0, 10), columnspan=1, rowspan=2,
@@ -30,6 +30,13 @@ class FlavourTextGUI(tb.LabelFrame):
     def generate(self):
         self.bind("<MouseWheel>", self.scroll_event)
 
+        # displays the dex entry
+        self.label = tb.Label(self, wraplength=WORDWRAP, justify="left",
+                              style="frame.TLabel", font=(FONT, FONT_SIZE))
+        self.label.grid(column=0, row=0, padx=(X_PAD, 0), pady=(2, 2),
+                              sticky='w')
+        self.label.bind("<MouseWheel>", self.scroll_event)
+
         self.page_number_label = tb.Label(self, style="frame.TLabel",
                                           font=(FONT, PAGE_NUM_SIZE))
         self.page_number_label.grid(sticky="se")
@@ -44,19 +51,8 @@ class FlavourTextGUI(tb.LabelFrame):
         self.update_entries()
 
     def update_entries(self):
-        # cleanup
-        if self.label:
-            self.label.destroy()
-
         text = self.descriptions[self.entry].replace("\u00ad ", "")
-
-        # add text to canvas
-        self.label = tb.Label(self, text=text, wraplength=WORDWRAP,
-                         justify="left", style="frame.TLabel",
-                         font=(FONT, FONT_SIZE))
-        self.label.grid(column=0, row=0, padx=(X_PAD, 0), pady=(2, 2),
-                              sticky='w')
-        self.label.bind("<MouseWheel>", self.scroll_event)
+        self.label.configure(text=text)
 
     def scroll_event(self, event):
         direction = event.delta / -abs(event.delta)

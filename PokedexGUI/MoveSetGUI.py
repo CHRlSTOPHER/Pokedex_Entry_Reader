@@ -2,7 +2,7 @@ import ttkbootstrap as tb
 
 import math
 
-from PokedexGUI.GlobalGUI import BG_COLOR
+from PokedexGUI.GlobalGUI import BG_COLOR, FG_COLOR
 
 FRAME_HEIGHT = 500
 FRAME_WIDTH = 310
@@ -67,10 +67,6 @@ class MoveSetGUI(tb.LabelFrame):
             move_name = move_data.get('move').get('name')
             move_name = move_name.replace("-", " ").title()
 
-            label = tb.Label(self.canvas, text=move_name,
-                             style='frame.TLabel', font=(FONT, FONT_SIZE))
-            label.bind("<MouseWheel>", self.scroll_event)
-
             # column * x is the two possible column coordinates
             # + x is the base increase to the right for both
             x_position = (column * 135) + 80
@@ -78,8 +74,9 @@ class MoveSetGUI(tb.LabelFrame):
             # row * y is the distance between each text and
             # + y is that little extra spacing at the start of the list
             # to push it into the labelframe instead of z-fighting it.
-            y_position = (math.floor(row) * 24) + 12
-            self.canvas.create_window(x_position, y_position, window=label)
+            y_position = (math.floor(row) * 24) + 16
+            self.canvas.create_text(x_position, y_position, text=move_name,
+                                    fill=FG_COLOR, font=(FONT, FONT_SIZE))
 
             row += 0.5
             column = (column + 1) % 2

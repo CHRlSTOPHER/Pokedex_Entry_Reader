@@ -32,34 +32,38 @@ class TypeGUI(tb.LabelFrame):
     def __init__(self, left_window):
         super().__init__(left_window, text=" Types ", padding=(0, -2, 0, -2),
                          style="frame.TLabelframe", labelanchor="n")
+        self.grid(column=0, row=1, sticky="ew", pady=FRAME_PAD, columnspan=1)
+
         self.type_1_label = None
         self.type_2_label = None
 
-        self.grid_frame()
+        self.generate()
 
-    def grid_frame(self):
-        self.grid(column=0, row=1, sticky="ew", pady=FRAME_PAD, columnspan=1)
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=1)
-
-    def update_labels(self, types):
-        # delete pre-existing labels.
-        if self.type_1_label:
-            self.type_1_label.grid_forget()
-        if self.type_2_label:
-            self.type_2_label.grid_forget()
-
-        # generate new labels depending amount of types.
+    def generate(self):
         self.type_1_label = tb.Label(self, font=(FONT, FONT_SIZE, "bold"),
                                      padding=(0, -1, 0, -1))
-        self.type_1_label.grid(row=0, column=0, padx=(X, X), pady=(1, 8),
-                          sticky='ne')
 
+        self.type_2_label = tb.Label(self, font=(FONT, FONT_SIZE, "bold"),
+                                     padding=(0, -1, 0, -1))
+        # there will always be at least 1 type, so first type will have weight
+        self.grid_columnconfigure(0, weight=1)
+
+    def update_labels(self, types):
+        # include label type if the pokemon has a second type
         if len(types) > 1:
-            self.type_2_label = tb.Label(self, font=(FONT, FONT_SIZE, "bold"),
-                                         padding=(0, -1, 0, -1))
+            # add second label and apply weight to it.
             self.type_2_label.grid(row=0, column=1, padx=(X, X), pady=(1, 8),
                                    sticky='nw')
+            self.grid_columnconfigure(1, weight=1)
+            self.type_1_label.grid(row=0, column=0, padx=(X, X), pady=(1, 8),
+                                   sticky='ne')
+
+        else:
+            # hide second label and remove weight
+            self.type_2_label.grid_forget()
+            self.type_1_label.grid(row=0, column=0, padx=(X, X), pady=(1, 8),
+                                   sticky='n')
+            self.grid_columnconfigure(1, weight=0)
 
         # set the name and add the bg color based on the type
         i = 0

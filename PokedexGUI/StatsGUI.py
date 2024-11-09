@@ -60,11 +60,11 @@ class StatsGUI(tb.LabelFrame):
         self.stat_canvas = tb.Canvas(self, height=CANVAS_HEIGHT,
                                      width=CANVAS_WIDTH)
         self.stat_canvas.configure(bg=BG_COLOR)
+        self.stat_canvas.grid()
 
     def update_bar_graphs(self, stats):
         # clean up all previous graphs and remake it
         self.stat_canvas.delete("all")
-        self.stat_canvas.grid()
 
         row = 0
         for stat_dict in stats:

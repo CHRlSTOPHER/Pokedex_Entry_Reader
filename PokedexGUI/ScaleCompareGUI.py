@@ -37,9 +37,11 @@ class ScaleCompareGUI(tb.LabelFrame):
         self.human_canvas = tb.Label(self)
         self.human_canvas.configure(background=BG_COLOR)
 
+        self.pokemon_canvas.grid(row=0, column=0, sticky='se', padx=(10, 10))
+        self.human_canvas.grid(row=0, column=1, sticky='ws', padx=(10, 10))
+
     def update_scale_compare(self, pokemon_height, artwork):
         self.pokemon_height = pokemon_height
-        self.reset_canvas()
         human_image = Image.open(TRAINER_IMG_PATH)
         pokemon_image = self.load_pokemon_image(artwork)
         # make image completely black and invert colors if theme is dark mode
@@ -49,12 +51,6 @@ class ScaleCompareGUI(tb.LabelFrame):
         human_image, pokemon_image = self.resize_images(human_image,
                                                         pokemon_image)
         self.render_images(human_image, pokemon_image)
-
-    def reset_canvas(self):
-        self.pokemon_canvas.grid_forget()
-        self.human_canvas.grid_forget()
-        self.pokemon_canvas.grid(row=0, column=0, sticky='se', padx=(10, 10))
-        self.human_canvas.grid(row=0, column=1, sticky='ws', padx=(10, 10))
 
     def load_pokemon_image(self, artwork):
         # Open the image
