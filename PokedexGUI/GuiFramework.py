@@ -1,5 +1,6 @@
 import tkinter as tk
 import ttkbootstrap as tb
+from ttkbootstrap import DISABLED
 
 from PokedexGUI.FlavourTextGUI import FlavourTextGUI
 from PokedexGUI.MoveSetGUI import MoveSetGUI
@@ -15,12 +16,14 @@ from PokedexGUI.AbilityGUI import AbilityGUI
 from PokedexGUI.HeightWeightGUI import HeightWeightGUI
 from PokedexGUI.GrowthRateGUI import GrowthRateGUI
 from PokedexGUI.EggGroupGUI import EggGroupGUI
+from PokedexGUI.SearchGUI import SearchGUI
 
 WORDWRAP = 120
 WINDOW_SIZE = "1660x720"
 TITLE = "Pokedex Entries"
 FONT = "Trebuchet MS"
 FONT_SIZE = 13
+ENABLED = "normal"
 
 DEBUG_WINDOW = "200x200+1452+216"
 ONE_TYPE_X = (115, 10)
@@ -31,7 +34,7 @@ class GuiFramework(tk.Tk):
 
     def __init__(self):
         super().__init__()
-
+        self.new_entry = False
         self.pkmn_data = None
         self.species_data = None
         self.entry_value = None
@@ -104,6 +107,11 @@ class GuiFramework(tk.Tk):
         self.frame_style.configure('frame.TFrame.Frame',
                                    background=BG_COLOR, foreground=FG_COLOR)
 
+        self.button_style = tb.Style()
+        self.button_style.configure('button.TButton', font=(FONT, 14),
+                                    background=FG_COLOR,
+                                    foreground=BG_COLOR, width=2)
+
         self.config(background=BG_COLOR)
 
     def left_gui(self):
@@ -133,14 +141,10 @@ class GuiFramework(tk.Tk):
         self.scale_gui = ScaleCompareGUI(self.right_window)
         self.sprite_gui = SpriteGUI(self.right_window)
         self.flavour_text_gui = FlavourTextGUI(self.right_window)
-
-        self.search_label = tb.Label(self.right_window, text="Search:",
-                                     background=BG_COLOR, foreground=FG_COLOR,
-                                     font=(FONT, 11, "bold"))
-        self.search_label.grid(row=2, column=1, padx=(0, 10), sticky='ne')
-        self.search_gui = tb.Entry(self.right_window, width=12)
-        self.search_gui.grid(sticky='nw', row=2, column=2)
-        self.search_gui.bind("<Return>", self.load_pokedex_data)
+        self.search_gui = SearchGUI(self.right_window)
+        self.search_gui.search_entry.bind("<Return>", self.new_dex_entry)
+        self.search_gui.left_button.config(command=self.go_back)
+        self.search_gui.right_button.config(command=self.go_forward)
 
     def update_gui(self, data, generation):
         # left window
@@ -162,3 +166,43 @@ class GuiFramework(tk.Tk):
         self.scale_gui.update_scale_compare(data.height, self.artwork)
         self.sprite_gui.update_sprites(generation, data.dex_num, self.shiny)
         self.flavour_text_gui.load_descriptions(data.flavour_text)
+
+        # update search history
+        if self.new_entry:
+            self.search_gui.append_to_search_list(data.name)
+
+    def go_back(self):
+        self.search_gui.right_button["state"] = ENABLED
+
+        # disable button if next entry is 0
+        if self.search_gui.search_index - 1 == 0:
+            self.search_gui.left_button["state"] = DISABLED
+        else:
+            self.search_gui.left_button["state"] = ENABLED
+
+        self.update_entry(-1)
+
+    def go_forward(self):
+        self.search_gui.left_button["state"] = ENABLED
+
+        # disable button if next entry is max
+        if self.search_gui.search_index + 2 == len(self.search_gui.searches):
+            self.search_gui.right_button["state"] = DISABLED
+        else:
+            self.search_gui.right_button["state"] = ENABLED
+
+        self.update_entry(1)
+
+    def update_entry(self, increment):
+        print(self.search_gui.search_index)
+        self.new_entry = False
+        self.search_gui.search_index += increment
+        entry = self.search_gui.searches[self.search_gui.search_index]
+        self.dex_entry = entry
+        self.load_pokedex_data()
+
+    def new_dex_entry(self, event):
+        self.new_entry = True
+        if event:
+            self.dex_entry = self.search_gui.search_entry.get()
+        self.load_pokedex_data()
