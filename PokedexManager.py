@@ -33,6 +33,7 @@ class PokedexManager(GuiFramework):
     def __init__(self):
         # Dex Data
         GuiFramework.__init__(self)
+        self.dex_entry = STARTER
         self.generation = None
         self.pkmn_data = None
         self.species_data = None
@@ -53,35 +54,32 @@ class PokedexManager(GuiFramework):
         self.gender_ratio = 0
         self.data_storage = None
 
-        self.search_gui.insert(0, STARTER)
-        self.load_pokedex_data(0)
+        self.new_dex_entry(0)
 
         self.mainloop()
 
-    def load_pokedex_data(self, key_press):
-        entry_value = self.search_gui.get()
-
+    def load_pokedex_data(self):
         # check if the entry already exists in our saved dex.
-        dex_data = attempt_pokemon_data_load(entry_value)
+        dex_data = attempt_pokemon_data_load(self.dex_entry)
 
         # call the api if we do not already have the pokemon saved.
         if not dex_data:
-            print(f"Loading Data for {entry_value}...")
-            self.pkmn_data = get_api_data(entry_value, POKEMON)
-            self.species_data = get_api_data(entry_value, SPECIES)
+            print(f"Loading Data for {self.dex_entry}...")
+            self.pkmn_data = get_api_data(self.dex_entry, POKEMON)
+            self.species_data = get_api_data(self.dex_entry, SPECIES)
 
         # verify that we have successfully retrieved the data.
         data_list = [dex_data, self.pkmn_data, self.species_data]
         has_data = self.verify_data(data_list)
         if not has_data:
-            print(f'{HTTP_ERROR_MESSAGE}"{entry_value}".')
+            print(f'{HTTP_ERROR_MESSAGE}"{self.dex_entry}".')
             return
 
         # define the dex variables based on whether we have api data or not.
         if dex_data:
             self.define_dex_data(dex_data)
         else:
-            self.define_api_data(entry_value)
+            self.define_api_data(self.dex_entry)
 
         # save the pokedex data for future use.
         self.data_storage = PokedexDataStorage(
