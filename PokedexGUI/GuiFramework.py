@@ -68,9 +68,9 @@ class GuiFramework(tk.Tk):
         self.right_window = None
         self.debug_window = None
 
-        self.generate()
+        self.generate_gui()
 
-    def generate(self):
+    def generate_gui(self):
         # self.debug_menu()
         self.geometry(WINDOW_SIZE)
         self.title(TITLE)
@@ -194,11 +194,10 @@ class GuiFramework(tk.Tk):
         self.update_entry(1)
 
     def update_entry(self, increment):
-        print(self.search_gui.search_index)
         self.new_entry = False
         self.search_gui.search_index += increment
         entry = self.search_gui.searches[self.search_gui.search_index]
-        self.dex_entry = entry
+        self.dex_entry = entry.lower()
         self.load_pokedex_data()
 
     def new_dex_entry(self, event):
