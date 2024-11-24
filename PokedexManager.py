@@ -3,6 +3,10 @@ from PokedexDataStorage import (PokedexDataStorage,
                                 attempt_pokemon_data_load)
 from PokedexGUI.GuiFramework import GuiFramework
 
+import logging
+
+LOG_LEVEL = logging.INFO
+
 HTTP_ERROR_MESSAGE = "Dex entry not found for "
 LANGUAGE = "en"
 
@@ -53,18 +57,28 @@ class PokedexManager(GuiFramework):
         self.egg_group = []
         self.gender_ratio = 0
         self.data_storage = None
+        self.cached_pokemon = {}
 
+        self.generate()
+
+    def generate(self):
+        logging.basicConfig(level=LOG_LEVEL)
         self.new_dex_entry(0)
-
         self.mainloop()
 
     def load_pokedex_data(self):
-        # check if the entry already exists in our saved dex.
-        dex_data = attempt_pokemon_data_load(self.dex_entry)
+        # check if the entry has been stored in the cache list
+        if self.dex_entry in self.cached_pokemon:
+            logging.info(f"Loading cached data for {self.dex_entry}.")
+            dex_data = self.cached_pokemon.get(self.dex_entry)
+        # check if the entry is in our database.
+        else:
+            logging.info(f"Accessing database for {self.dex_entry}.")
+            dex_data = attempt_pokemon_data_load(self.dex_entry)
 
         # call the api if we do not already have the pokemon saved.
         if not dex_data:
-            print(f"Loading Data for {self.dex_entry}...")
+            logging.info(f"Calling API for {self.dex_entry}...")
             self.pkmn_data = get_api_data(self.dex_entry, POKEMON)
             self.species_data = get_api_data(self.dex_entry, SPECIES)
 
@@ -91,11 +105,16 @@ class PokedexManager(GuiFramework):
         self.data_storage.save_json_data()
         self.generation = self.data_storage.get_generation()
 
+        # add entry to cache list if not currently included
+        if self.dex_entry not in self.cached_pokemon:
+            self.cached_pokemon[self.dex_entry] = self.data_storage.get_data()
+
         self.update_gui(self.data_storage, self.generation)
 
     def verify_data(self, data_list):
         data_bool = False
         for data in data_list:
+            # if data is found, we can assume it is valid
             if data:
                 data_bool = True
 
