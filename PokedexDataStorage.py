@@ -13,7 +13,7 @@ DEX_JSON = "pokedex_list"
 
 def attempt_pokemon_data_load(pokemon):
     pokemon = pokemon.title()
-    # check if desired pokemon has been registered in the dex.
+    # check if requested pokemon has been registered in the database.
     with open(f"{DEX_JSON}.json") as f:
         dex_json = json.load(f)
         if pokemon not in dex_json:
@@ -47,24 +47,7 @@ class PokedexDataStorage:
     gender_ratio: int
 
     def save_json_data(self):
-        self.dex_data = {
-            "name": self.name,
-            "dex_num": self.dex_num,
-            "genera": self.genera,
-            "artwork": self.artwork,
-            "type": self.type,
-            "capture_rate": self.capture_rate,
-            "height": self.height,
-            "weight": self.weight,
-            "abilities": self.abilities,
-            "stats": self.stats,
-            "moves": self.moves,
-            "cries": self.cries,
-            "flavour_text": self.flavour_text,
-            "growth_rate": self.growth_rate,
-            "egg_group": self.egg_group,
-            "gender_rate": self.gender_ratio
-        }
+        self.dex_data = self.get_data()
 
         generation = self.get_generation()
         pkmn_filename = f"{self.name}.json"
@@ -116,3 +99,23 @@ class PokedexDataStorage:
                 return gen_num
             else:
                 gen_num += 1
+
+    def get_data(self):
+        return {
+            "name": self.name,
+            "dex_num": self.dex_num,
+            "genera": self.genera,
+            "artwork": self.artwork,
+            "type": self.type,
+            "capture_rate": self.capture_rate,
+            "height": self.height,
+            "weight": self.weight,
+            "abilities": self.abilities,
+            "stats": self.stats,
+            "moves": self.moves,
+            "cries": self.cries,
+            "flavour_text": self.flavour_text,
+            "growth_rate": self.growth_rate,
+            "egg_group": self.egg_group,
+            "gender_rate": self.gender_ratio
+        }
