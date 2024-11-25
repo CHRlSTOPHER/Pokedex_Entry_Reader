@@ -2,6 +2,7 @@ from ParseWebpage import get_api_data
 from PokedexDataStorage import (PokedexDataStorage,
                                 attempt_pokemon_data_load)
 from PokedexGUI.GuiFramework import GuiFramework
+from PokedexGUI.GlobalGUI import DEFAULT_POKEMON
 
 import logging
 
@@ -29,7 +30,7 @@ GENDER = "gender_rate"
 
 POKEMON = "pokemon"
 SPECIES = "pokemon-species"
-STARTER = "bulbasaur"
+
 
 
 class PokedexManager(GuiFramework):
@@ -37,7 +38,7 @@ class PokedexManager(GuiFramework):
     def __init__(self):
         # Dex Data
         GuiFramework.__init__(self)
-        self.dex_entry = STARTER
+        self.dex_entry = DEFAULT_POKEMON
         self.generation = None
         self.pkmn_data = None
         self.species_data = None

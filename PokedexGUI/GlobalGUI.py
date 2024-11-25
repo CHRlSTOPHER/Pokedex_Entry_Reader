@@ -1,3 +1,5 @@
+DEFAULT_POKEMON = "bulbasaur"
+
 DARK_MODE = True
 
 if DARK_MODE:

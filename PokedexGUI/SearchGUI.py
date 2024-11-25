@@ -3,7 +3,7 @@ from tkinter import StringVar
 import ttkbootstrap as tb
 from ttkbootstrap import DISABLED
 
-from PokedexGUI.GlobalGUI import *
+from PokedexGUI.GlobalGUI import DEFAULT_POKEMON, BG_COLOR, FG_COLOR
 
 WORDWRAP = 120
 WINDOW_SIZE = "1660x720"
@@ -14,7 +14,7 @@ FONT_SIZE = 11
 AREA = 20
 ENABLED = "normal"
 ALPHABET = "abcdefghjijklmnopqrstuvwxyz"
-DEFAULT_LETTER = 'B'
+DEFAULT_LETTER = DEFAULT_POKEMON[0].upper()
 
 class SearchGUI(tb.Frame):
 
@@ -28,7 +28,6 @@ class SearchGUI(tb.Frame):
         self.search_index = -1
         self.alphabet_list = []
         self.alphabet_dict = {}
-        self.letter = DEFAULT_LETTER
 
         self.generate()
 
@@ -63,12 +62,26 @@ class SearchGUI(tb.Frame):
     def generate_drop_down_gui(self):
         self.create_alphabet_collections()
 
-        # drop down gui
-        letter = StringVar()
-        letter.set(self.letter)
-        self.alphabet_menu = tb.OptionMenu(self, letter, self.letter,
-                                           *self.alphabet_list)
+        # letter drop down value
+        self.menu_letter = StringVar()
+        self.menu_letter.set(DEFAULT_LETTER)
+        # this will bind a function to stringvar. updates trigger the function
+        self.menu_letter.trace_add('write', self.update_name_menu)
+
+        # letter drop down menu
+        self.alphabet_menu = tb.OptionMenu(self, self.menu_letter,
+                                           DEFAULT_LETTER, *self.alphabet_list)
         self.alphabet_menu.grid(row=0, column=4)
+
+        # name drop down value
+        menu_name = StringVar()
+        menu_name.set(DEFAULT_POKEMON)
+
+        # name drop down menu
+
+    def update_name_menu(self, *args):
+        # the user selected a new letter. change the options to match
+        pass
 
     def create_alphabet_collections(self):
         for letter in ALPHABET:
