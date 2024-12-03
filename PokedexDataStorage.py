@@ -6,10 +6,11 @@ from dataclasses import dataclass
 import json
 import os
 
+from PokedexGUI.GlobalGUI import DEX_FOLDER
+
 # check which generation the pokemon id falls in
 GENERATIONS = [151, 251, 386, 493, 649, 721, 809, 905, 1025]
-DEX_FOLDER = "pokedex_entries"
-DEX_JSON = "pokedex_list"
+
 
 
 def check_data_availability(pokemon):
@@ -26,7 +27,7 @@ def check_data_availability(pokemon):
                 # the pokemon is in the database!
                 return generation
 
-        return None
+    return None
 
 def attempt_pokemon_data_load(pokemon):
     pokemon = pokemon.title()
