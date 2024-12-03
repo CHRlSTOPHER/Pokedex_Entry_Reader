@@ -41,14 +41,13 @@ class SpriteGUI(tb.LabelFrame):
         self.shiny = shiny
 
         # check if sprites are availble
-        sprite_paths = None
         if self.generation in VERSION_PATHS:
             self.config(text=DEFAULT_NAME)
             sprite_paths = self.get_sprite_paths()
             self.load_sprites(sprite_paths)
         else:
-            self.reset_widgets([])
             self.cleanup_labels()
+            self.reset_widgets([])
             self.config(text=ALT_NAME)
             self.load_alt_art()
 
@@ -158,3 +157,7 @@ class SpriteGUI(tb.LabelFrame):
             columns = len(sprite_paths)
             [self.columnconfigure(i, weight=1) for i in range(columns)]
             self.rowconfigure(0, weight=1)
+
+    def cleanup_labels(self):
+        for label in self.sprite_labels:
+            label.grid_forget()
