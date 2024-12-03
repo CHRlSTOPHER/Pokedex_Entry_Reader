@@ -1,9 +1,10 @@
-from tkinter import StringVar
+import os
 
+from tkinter import StringVar
 import ttkbootstrap as tb
 from ttkbootstrap import DISABLED
 
-from PokedexGUI.GlobalGUI import DEFAULT_POKEMON, BG_COLOR, FG_COLOR
+from PokedexGUI.GlobalGUI import *
 
 WORDWRAP = 120
 WINDOW_SIZE = "1660x720"
@@ -24,10 +25,12 @@ class SearchGUI(tb.Frame):
 
         self.search_label = None
         self.search_entry = None
+        self.disable_load = True
         self.searches = []
         self.search_index = -1
         self.alphabet_list = []
         self.alphabet_dict = {}
+        self.pokemon_letter_list = {}
 
         self.generate()
 
@@ -62,6 +65,20 @@ class SearchGUI(tb.Frame):
     def generate_drop_down_gui(self):
         self.create_alphabet_collections()
 
+        # name drop down value
+        self.menu_name = StringVar()
+        self.menu_name.set(DEFAULT_POKEMON)
+
+        # trace_add function is in gui framework
+
+        self.retrieve_database_names()
+
+        # name drop down menu
+        self.name_menu = tb.OptionMenu(self, self.menu_name, DEFAULT_POKEMON,
+                                       self.pokemon_letter_list[DEFAULT_LETTER]
+                                       )
+        self.name_menu.grid(row=0, column=5)
+
         # letter drop down value
         self.menu_letter = StringVar()
         self.menu_letter.set(DEFAULT_LETTER)
@@ -73,24 +90,65 @@ class SearchGUI(tb.Frame):
                                            DEFAULT_LETTER, *self.alphabet_list)
         self.alphabet_menu.grid(row=0, column=4)
 
-        # name drop down value
-        menu_name = StringVar()
-        menu_name.set(DEFAULT_POKEMON)
-
-        # name drop down menu
 
     def update_name_menu(self, *args):
+        # don't set a new entry. we are only changing the menu values.
+        self.disable_load = True
+
         # the user selected a new letter. change the options to match
-        pass
+        menu = self.name_menu["menu"]
+        menu.delete(0, "end")
+        if len(args) == 1:
+            letter = args[0]
+        else:
+            letter = self.menu_letter.get()
+
+        name_list = self.pokemon_letter_list[letter]
+        self.name_menu.set_menu(name_list[0], *name_list)
+        # re-enable
+        self.disable_load = False
 
     def create_alphabet_collections(self):
         for letter in ALPHABET:
             letter = letter.upper()
             self.alphabet_list.append(letter)
             self.alphabet_dict[letter] = []
+            self.pokemon_letter_list[letter] = []
 
     def append_to_search_list(self, query):
+        # remove pokemon from search list if it already exists
+        if query in self.searches:
+            index = self.searches.index(query)
+            self.searches.pop(index)
+            self.search_index -= 1
+
+        # add the query at the end of the list
         self.searches.append(query)
         self.search_index += 1
         if len(self.searches) > 1:
             self.left_button["state"] = ENABLED
+
+    def retrieve_database_names(self):
+        for generation in range(1, 10):  # generation 1-9
+            path = f"{DEX_FOLDER}/gen_{generation}"
+            # get all file names
+            for file in os.listdir(path):
+                # split the pokemon name from the file extension
+                name = file.split(".")[0]
+                # use the first letter to determine which key is assigned
+                letter = name[0]
+                # add the name to the dictionary's list
+                # example: add Abra to the 'A' dictonary
+                self.pokemon_letter_list[letter].append(name)
+
+    def append_to_database_names(self, name):
+        # if we acquire a new pokemon through an api call, append the name
+        letter = name[0].upper()
+        self.pokemon_letter_list[letter].append(name)
+        self.update_name_menu(name)
+
+    def get_menu_name(self):
+        return self.menu_name
+
+    def get_new_entry(self):
+        return self.new_entry
