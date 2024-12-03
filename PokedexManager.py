@@ -95,6 +95,8 @@ class PokedexManager(GuiFramework):
             self.define_dex_data(dex_data)
         else:
             self.define_api_data(self.dex_entry)
+            # there's a new entry, so add it to the dropdrop name menu
+            self.search_gui.append_to_database_names(self.dex_entry)
 
         # save the pokedex data for future use.
         self.data_storage = PokedexDataStorage(

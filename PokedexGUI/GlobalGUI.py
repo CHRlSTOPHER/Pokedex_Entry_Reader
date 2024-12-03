@@ -1,4 +1,5 @@
 DEFAULT_POKEMON = "bulbasaur"
+DEX_FOLDER = "pokedex_entries"
 
 DARK_MODE = True
 

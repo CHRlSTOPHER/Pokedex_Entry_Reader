@@ -145,6 +145,8 @@ class GuiFramework(tk.Tk):
         self.search_gui.search_entry.bind("<Return>", self.new_dex_entry)
         self.search_gui.left_button.config(command=self.go_back)
         self.search_gui.right_button.config(command=self.go_forward)
+        menu_name = self.search_gui.get_menu_name()
+        menu_name.trace_add('write', self.menu_dex_entry)
 
     def update_gui(self, data, generation):
         # left window
@@ -205,3 +207,30 @@ class GuiFramework(tk.Tk):
         if event:
             self.dex_entry = self.search_gui.search_entry.get()
         self.load_pokedex_data()
+        self.reset_history_placement()
+
+    def menu_dex_entry(self, *args):
+        self.new_entry = True
+        disabled = self.search_gui.disable_load
+        if not disabled:
+            name = self.search_gui.menu_name.get()
+            self.dex_entry = name
+            self.load_pokedex_data()
+            self.reset_history_placement()
+
+    def reset_history_placement(self):
+        # adjust the current position of the back and forward arrow index
+        # make the current index jump up to the final value of the list
+        # to match up with the search index.
+        # get the final index of the list
+
+        index = len(self.search_gui.searches)
+        if index == 1:
+            return
+
+        # uodate the current index
+        self.search_gui.search_index = index - 1
+        entry = self.search_gui.searches[self.search_gui.search_index]
+        # adjust the buttons enabled
+        self.search_gui.left_button["state"] = ENABLED
+        self.search_gui.right_button["state"] = DISABLED
