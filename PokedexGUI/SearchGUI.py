@@ -99,7 +99,7 @@ class SearchGUI(tb.Frame):
         menu = self.name_menu["menu"]
         menu.delete(0, "end")
         if len(args) == 1:
-            letter = args[0]
+            letter = args[0][0] # first arg, first letter
         else:
             letter = self.menu_letter.get()
 
