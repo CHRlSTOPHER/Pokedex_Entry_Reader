@@ -103,7 +103,7 @@ class SearchGUI(tb.Frame):
         else:
             letter = self.menu_letter.get()
 
-        name_list = self.pokemon_letter_list[letter]
+        name_list = self.pokemon_letter_list[letter.upper()]
         self.name_menu.set_menu(name_list[0], *name_list)
         # re-enable
         self.disable_load = False
