@@ -90,7 +90,6 @@ class SearchGUI(tb.Frame):
                                            DEFAULT_LETTER, *self.alphabet_list)
         self.alphabet_menu.grid(row=0, column=4)
 
-
     def update_name_menu(self, *args):
         # don't set a new entry. we are only changing the menu values.
         self.disable_load = True
@@ -104,7 +103,11 @@ class SearchGUI(tb.Frame):
             letter = self.menu_letter.get()
 
         name_list = self.pokemon_letter_list[letter.upper()]
-        self.name_menu.set_menu(name_list[0], *name_list)
+        # check if there are values in the name list
+        if name_list:
+            self.name_menu.set_menu(name_list[0], *name_list)
+        else:
+            self.name_menu.set_menu("None", "None")
         # re-enable
         self.disable_load = False
 

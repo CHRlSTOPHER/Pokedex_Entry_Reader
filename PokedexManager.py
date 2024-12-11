@@ -68,6 +68,12 @@ class PokedexManager(GuiFramework):
         self.mainloop()
 
     def load_pokedex_data(self):
+        # if a letter doesn't have any entries, return
+        # example: the user selects the letter 'Y' but no names have been saved
+        # None is a string, since the value needs to be a string for stringvar
+        if self.dex_entry == "None":
+            return
+
         # check if the entry has been stored in the cache list
         if self.dex_entry in self.cached_pokemon:
             logging.info(f"Loading cached data for {self.dex_entry}.")
