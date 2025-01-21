@@ -110,7 +110,7 @@ class GuiFramework(tk.Tk):
         self.button_style = tb.Style()
         self.button_style.configure('button.TButton', font=(FONT, 14),
                                     background=FG_COLOR,
-                                    foreground=BG_COLOR, width=2)
+                                    foreground=BG_COLOR, width=1)
 
         self.config(background=BG_COLOR)
 

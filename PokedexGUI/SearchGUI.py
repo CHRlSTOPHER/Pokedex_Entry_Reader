@@ -46,10 +46,10 @@ class SearchGUI(tb.Frame):
     def generate_back_forward_gui(self):
         # Move between Pokemon searches (left arrow - previous searches)
         # (right arrow - recent searches. right works after pressing left)
-        self.left_button = tb.Button(self, text=' <', style='button.TButton')
-        self.right_button = tb.Button(self, text=' >', style='button.TButton')
+        self.left_button = tb.Button(self, text='<', style='button.TButton')
+        self.right_button = tb.Button(self, text='>', style='button.TButton')
         self.left_button.grid(column=0, row=0, padx=(10, 0), sticky='w')
-        self.right_button.grid(column=1, row=0, padx=(0, 0), sticky='w')
+        self.right_button.grid(column=1, row=0, padx=(0, 5), sticky='w')
         self.left_button["state"] = DISABLED
         self.right_button["state"] = DISABLED
 
@@ -60,7 +60,7 @@ class SearchGUI(tb.Frame):
         self.search_label.grid(row=0, column=2, sticky='e', padx=(0, 3))
 
         self.search_entry = tb.Entry(self, width=12)
-        self.search_entry.grid(row=0, column=3, sticky='w')
+        self.search_entry.grid(row=0, column=3, sticky='w', padx=(0, 5))
 
     def generate_drop_down_gui(self):
         self.create_alphabet_collections()
