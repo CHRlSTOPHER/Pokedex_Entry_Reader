@@ -2,7 +2,8 @@ import ttkbootstrap as tb
 
 WORDWRAP = 400
 FONT = "Bahnschrift Light Condensed"
-FONT_SIZE = 20
+FONT = "Trebuchet MS"
+FONT_SIZE = 16
 X_PAD = 80
 PAGE_NUM_SIZE = 20
 
@@ -33,7 +34,7 @@ class FlavourTextGUI(tb.LabelFrame):
         # displays the dex entry
         self.label = tb.Label(self, wraplength=WORDWRAP, justify="left",
                               style="frame.TLabel", font=(FONT, FONT_SIZE))
-        self.label.grid(column=0, row=0, padx=(X_PAD, 0), pady=(2, 2),
+        self.label.grid(column=0, row=0, padx=(X_PAD, 0), pady=(30, 2),
                               sticky='w')
         self.label.bind("<MouseWheel>", self.scroll_event)
 
